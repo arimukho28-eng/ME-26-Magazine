@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPECTRUM - Mechanical Engineering Magazine</title>
+    <!-- Tailwind CSS Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JQuery Core & Turn.js Engine dependencies for Native Flipbook -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
     <style>
@@ -29,7 +31,6 @@
                         0 0 20px 0 rgba(139, 92, 246, 0.15);
         }
 
-        /* Upgraded Zenith Ghost-to-Solid Glowing Pop Button Mechanics */
         .zenith-btn-ghost {
             background: transparent;
             border: 1px solid rgba(167, 139, 250, 0.4);
@@ -69,7 +70,6 @@
             transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
         }
 
-        /* Fixed Pure Dissolve Exit (No translation trails) */
         .preload-text-dissolve {
             opacity: 0 !important;
             filter: blur(16px);
@@ -113,7 +113,8 @@
             transition: transform 0.4s ease-in-out;
             cursor: pointer;
         }
-        
+        .showing-first-page { transform: translateX(25%); }
+        .showing-last-page { transform: translateX(-25%); }
 
         #native-magazine .page {
             background-color: #0f111a;
@@ -132,6 +133,7 @@
 </head>
 <body class="premium-bg text-gray-100 font-sans antialiased min-h-screen selection:bg-purple-500/30 pt-24 relative overflow-x-hidden w-full">
 
+    <!-- Fast Dissolving Rebranded Preloader Screen -->
     <div id="site-preloader">
         <div class="preload-text-wrapper max-w-3xl w-full text-center space-y-3 relative z-10">
             <h2 class="text-2xl md:text-4xl font-black tracking-[0.18em] text-white uppercase sm:leading-snug px-4">
@@ -143,8 +145,10 @@
         </div>
     </div>
 
+    <!-- Background Particle Vectors -->
     <canvas id="ambient-particles" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
 
+    <!-- Sticky Navigation Header Bar -->
     <header class="fixed top-0 left-0 right-0 z-40 glass-nav">
         <div class="max-w-6xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-4">
@@ -163,6 +167,7 @@
                     </svg>
                 </button>
 
+                <!-- Dropdown Menu -->
                 <div id="dropdown-menu" class="hidden absolute right-4 md:right-6 top-16 w-48 rounded-xl glass-card shadow-2xl overflow-hidden origin-top-right transition-all duration-200 transform scale-95 opacity-0 z-50">
                     <div class="py-1 bg-[#090a14]/95" role="menu">
                         <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Home</a>
@@ -176,32 +181,108 @@
         </div>
     </header>
 
+    <!-- Faculty Popup Modal Component -->
     <div id="faculty-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="relative w-full max-w-5xl rounded-3xl glass-card max-h-[85vh] overflow-y-auto border border-purple-500/20 shadow-2xl">
+            <!-- Modal Header with Updated Architecture Requirements -->
             <div class="sticky top-0 z-10 bg-[#0c0e1a]/90 backdrop-blur px-8 py-5 border-b border-purple-950/60 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-white uppercase tracking-widest">Faculty Directory</h3>
+                <div>
+                    <h3 class="text-xl font-bold text-white uppercase tracking-widest">Faculty Directory</h3>
+                    <p class="text-xs text-purple-400/90 font-mono tracking-wider uppercase mt-1">Mechanical Engineering Department</p>
+                </div>
                 <button id="faculty-modal-close" class="text-gray-400 hover:text-white"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
+            
+            <!-- Complete Re-engineered 10 Faculty Directory Array Layout -->
             <div class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center group zenith-hover">
+                <!-- Faculty Member 1 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
                     <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3"><img src="image_0a446e.png" class="w-full h-full object-cover"></div>
-                    <h4 class="text-sm font-bold text-white">Dr. Santanu Das</h4>
-                    <p class="text-[11px] text-purple-400">Professor & Registrar</p>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Santanu Das</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Registrar, KGEC</p>
+                    </div>
                 </div>
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center group zenith-hover">
+                <!-- Faculty Member 2 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
                     <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3"><img src="image_004823.jpg" class="w-full h-full object-cover"></div>
-                    <h4 class="text-sm font-bold text-white">Dr. Tridibesh Das</h4>
-                    <p class="text-[11px] text-purple-400">Professor & HOD</p>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Tridibesh Das</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Head of the dept</p>
+                    </div>
                 </div>
-                <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px] flex items-center justify-center min-h-[140px]">Upcoming Profile</div>
-                <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px] flex items-center justify-center min-h-[140px]">Upcoming Profile</div>
-                <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px] flex items-center justify-center min-h-[140px]">Upcoming Profile</div>
+                <!-- Faculty Member 3 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3 flex items-center justify-center text-slate-500 font-mono text-[10px]"><img src="image_debojyoti.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'">[ PHOTO ]</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Debojyoti Mitra</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Ex HOD</p>
+                    </div>
+                </div>
+                <!-- Faculty Member 4 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3 flex items-center justify-center text-slate-500 font-mono text-[10px]"><img src="image_nripen.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'">[ PHOTO ]</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Nripen Mondal</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Assistant Professor</p>
+                    </div>
+                </div>
+                <!-- Faculty Member 5 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3 flex items-center justify-center text-slate-500 font-mono text-[10px]"><img src="image_arijit.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'">[ PHOTO ]</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Arijit Kundu</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Assistant Professor</p>
+                    </div>
+                </div>
+                <!-- Faculty Member 6 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3 flex items-center justify-center text-slate-500 font-mono text-[10px]"><img src="image_debasish.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'">[ PHOTO ]</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Debasish Biswas</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Assistant Professor</p>
+                    </div>
+                </div>
+                <!-- Faculty Member 7 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3 flex items-center justify-center text-slate-500 font-mono text-[10px]"><img src="image_sirsendu.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'">[ PHOTO ]</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Sirsendu Mahata</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Associate Professor</p>
+                    </div>
+                </div>
+                <!-- Faculty Member 8 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3 flex items-center justify-center text-slate-500 font-mono text-[10px]"><img src="image_sibsankar.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'">[ PHOTO ]</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Sibsankar Dasmahapatra</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Assistant Professor</p>
+                    </div>
+                </div>
+                <!-- Faculty Member 9 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3 flex items-center justify-center text-slate-500 font-mono text-[10px]"><img src="image_samir.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'">[ PHOTO ]</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Dr. Samir Chakravarti</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Assistant Professor</p>
+                    </div>
+                </div>
+                <!-- Faculty Member 10 -->
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 flex flex-col justify-between text-center group zenith-hover">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3 flex items-center justify-center text-slate-500 font-mono text-[10px]"><img src="image_bidhan.jpg" class="w-full h-full object-cover" onerror="this.style.display='none'">[ PHOTO ]</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white tracking-wide">Mr. Bidhan Chandra Biswas</h4>
+                        <p class="text-[11px] text-purple-400 font-medium mt-1 leading-tight">Assistant Professor</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Main Content Container Wrapper -->
     <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10 box-border">
         
+        <!-- Hero Section -->
         <main class="text-center w-full mb-32 relative py-4 hero-glow reveal-element">
             <div class="space-y-2 mb-6">
                 <span class="block text-sm md:text-lg font-black tracking-[0.2em] text-purple-400 uppercase">Department of Mechanical Engineering</span>
@@ -223,6 +304,7 @@
             </div>
         </main>
 
+        <!-- The Spirit of SPECTRUM Section -->
         <section id="spirit" class="w-full mb-32 scroll-mt-24 reveal-element">
             <div class="text-center mb-12">
                 <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white uppercase">The Spirit of Spectrum</h2>
@@ -240,6 +322,7 @@
             </div>
         </section>
 
+        <!-- From the Desk of the Faculty Section -->
         <section id="administration" class="w-full mb-32 scroll-mt-24 reveal-element">
             <div class="text-center mb-12">
                 <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white uppercase">From the Desk of the Faculty</h2>
@@ -266,10 +349,11 @@
             </div>
         </section>
 
+        <!-- Native Custom Interactive Flipbook Section -->
         <section id="read-now" class="w-full mb-32 scroll-mt-24 reveal-element">
+            <!-- Clean Header Node Container with Subheader Removed -->
             <div class="text-center mb-10">
                 <h2 class="text-2xl font-bold text-white tracking-widest uppercase">Spectrum Digital Edition</h2>
-                <p class="text-purple-400/80 text-xs font-mono mt-1 uppercase tracking-widest">Natively Rendered • Zero Ads • No Watermark</p>
             </div>
             
             <div id="magazine-viewport" class="w-full h-[460px] md:h-[640px] overflow-hidden rounded-2xl border border-purple-900/30 bg-[#020306] shadow-2xl relative flex items-center justify-center">
@@ -284,24 +368,23 @@
             </div>
         </section>
 
+        <!-- Footer Area -->
         <footer class="w-full py-12 text-center text-xs text-slate-500 tracking-widest uppercase border-t border-purple-950/30">
             &copy; 2026 Department of Mechanical Engineering, KGEC. All Rights Reserved.
         </footer>
     </div>
 
+    <!-- Script Engines -->
     <script>
         $(window).on('load', function() {
             // --- HIGH-FIDELITY FAST DISSOLVING PRELOADER SEQUENCER ---
             setTimeout(() => {
-                // Dissolve out text node cleanly
                 $('.preload-text-wrapper').addClass('preload-text-dissolve');
-                
-                // Dissolve out container layer simultaneously with no vertical layout movement lines
                 setTimeout(() => {
                     $('#site-preloader').addClass('loader-panel-exit');
                     initScrollReveal();
                 }, 400); 
-            }, 1000); // Tighter 1-second stay time mapping reference parameters
+            }, 1000); 
 
             // FLIPBOOK CORE MODULE
             const viewport = $('#magazine-viewport');
@@ -318,13 +401,25 @@
             magazine.turn({
                 width: calculatedWidth,
                 height: calculatedHeight,
-                autoCenter: true, 
-                display: window.innerWidth < 768 ? 'single' : 'double',
+                autoCenter: false, 
+                display: 'double',
                 acceleration: true,
                 gradients: true,
                 elevation: 60,
-                });
-            
+                when: {
+                    turning: function(event, targetPage) {
+                        const totalPages = magazine.turn('pages');
+                        if (targetPage === 1) {
+                            magazine.addClass('showing-first-page').removeClass('showing-last-page');
+                        } else if (targetPage === totalPages) {
+                            magazine.addClass('showing-last-page').removeClass('showing-first-page');
+                        } else {
+                            magazine.removeClass('showing-first-page showing-last-page');
+                        }
+                    }
+                }
+            });
+            magazine.addClass('showing-first-page');
         });
 
         // --- SCROLL INTERSECTION MODULE ---
