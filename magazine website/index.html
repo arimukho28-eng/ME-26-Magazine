@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPECTRUM - Mechanical Engineering Magazine</title>
-    <!-- Tailwind CSS Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- JQuery Core & Turn.js Engine dependencies for Native Flipbook -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
     <style>
@@ -16,7 +14,7 @@
         .glow-text { text-shadow: 0 0 35px rgba(167, 139, 250, 0.5); }
         .hero-glow { background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%); }
         
-        /* --- HIGH-FIDELITY ZENITH-STYLE INTERACTIVE HOVER CONFIGURATIONS --- */
+        /* --- ZENITH-STYLE INTERACTIVE HOVER CONFIGURATIONS --- */
         .zenith-hover {
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
                         box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
@@ -31,20 +29,27 @@
                         0 0 20px 0 rgba(139, 92, 246, 0.15);
         }
 
-        /* High-End Glowing Pop Button Mechanics */
-        .zenith-btn-glow {
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
-                        box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
-                        filter 0.3s ease;
+        /* Upgraded Zenith Ghost-to-Solid Glowing Pop Button Mechanics */
+        .zenith-btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(167, 139, 250, 0.4);
+            color: rgba(216, 180, 254, 0.9);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                        box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                        background 0.4s ease,
+                        border-color 0.4s ease,
+                        color 0.3s ease;
         }
-        .zenith-btn-glow:hover {
-            transform: translateY(-3px) scale(1.04);
-            box-shadow: 0 0 30px 5px rgba(139, 92, 246, 0.5),
-                        0 10px 20px -5px rgba(99, 102, 241, 0.4);
-            filter: brightness(1.1);
+        .zenith-btn-ghost:hover {
+            transform: translateY(-4px) scale(1.04);
+            background: linear-gradient(90deg, #7c3aed, #4f46e5);
+            border-color: rgba(167, 139, 250, 0.8);
+            color: #ffffff;
+            box-shadow: 0 0 35px 6px rgba(139, 92, 246, 0.55),
+                        0 12px 24px -6px rgba(99, 102, 241, 0.45);
         }
         
-        /* --- HIGH-FIDELITY ZENITH-STYLE PRELOADER ANIMATIONS --- */
+        /* --- SPEED-OPTIMIZED ZENITH-STYLE DISSOLVING PRELOADER --- */
         #site-preloader {
             position: fixed;
             inset: 0;
@@ -55,33 +60,34 @@
             align-items: center;
             justify-content: center;
             padding: 24px;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.2s ease;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .preload-text-wrapper {
-            animation: textFlyUp 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: textFlyUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
             opacity: 0;
+            transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
         }
 
+        /* Fixed Pure Dissolve Exit (No translation trails) */
         .preload-text-dissolve {
-            animation: textDissolve 0.8s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+            opacity: 0 !important;
+            filter: blur(16px);
+            transform: scale(0.96);
         }
 
         .loader-panel-exit {
-            transform: translateY(-100%);
+            opacity: 0 !important;
+            filter: blur(20px);
+            pointer-events: none;
         }
 
         @keyframes textFlyUp {
-            0% { transform: translateY(40px); opacity: 0; filter: blur(8px); }
+            0% { transform: translateY(30px); opacity: 0; filter: blur(6px); }
             100% { transform: translateY(0); opacity: 1; filter: blur(0); }
         }
 
-        @keyframes textDissolve {
-            0% { transform: translateY(0); opacity: 1; filter: blur(0); }
-            100% { transform: translateY(-20px); opacity: 0; filter: blur(12px); }
-        }
-
-        /* --- SMOOTH SCROLL ENTRANCE ANIMATIONS (ZENITH INSPIRED) --- */
+        /* --- SMOOTH SCROLL ENTRANCE ANIMATIONS --- */
         .reveal-element {
             opacity: 0;
             transform: translateY(30px);
@@ -127,7 +133,6 @@
 </head>
 <body class="premium-bg text-gray-100 font-sans antialiased min-h-screen selection:bg-purple-500/30 pt-24 relative overflow-x-hidden w-full">
 
-    <!-- Zenith-Inspired Preloader Screen -->
     <div id="site-preloader">
         <div class="preload-text-wrapper max-w-3xl w-full text-center space-y-3 relative z-10">
             <h2 class="text-2xl md:text-4xl font-black tracking-[0.18em] text-white uppercase sm:leading-snug px-4">
@@ -139,10 +144,8 @@
         </div>
     </div>
 
-    <!-- Background Particle Vectors -->
     <canvas id="ambient-particles" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
 
-    <!-- Sticky Navigation Header Bar -->
     <header class="fixed top-0 left-0 right-0 z-40 glass-nav">
         <div class="max-w-6xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-4">
@@ -152,7 +155,6 @@
             </div>
             
             <div class="flex items-center space-x-3">
-                <!-- Interactive Faculty Trigger Button -->
                 <button id="faculty-modal-open" class="text-xs font-semibold tracking-widest uppercase text-slate-300 hover:text-white px-4 py-2.5 rounded-full hover:bg-purple-500/10 transition-all duration-200">
                     Faculty
                 </button>
@@ -162,7 +164,6 @@
                     </svg>
                 </button>
 
-                <!-- Dropdown Menu -->
                 <div id="dropdown-menu" class="hidden absolute right-4 md:right-6 top-16 w-48 rounded-xl glass-card shadow-2xl overflow-hidden origin-top-right transition-all duration-200 transform scale-95 opacity-0 z-50">
                     <div class="py-1 bg-[#090a14]/95" role="menu">
                         <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Home</a>
@@ -176,7 +177,6 @@
         </div>
     </header>
 
-    <!-- Faculty Popup Modal Component -->
     <div id="faculty-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="relative w-full max-w-5xl rounded-3xl glass-card max-h-[85vh] overflow-y-auto border border-purple-500/20 shadow-2xl">
             <div class="sticky top-0 z-10 bg-[#0c0e1a]/90 backdrop-blur px-8 py-5 border-b border-purple-950/60 flex justify-between items-center">
@@ -184,19 +184,16 @@
                 <button id="faculty-modal-close" class="text-gray-400 hover:text-white"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
             <div class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                <!-- Faculty Member 1 -->
                 <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center group zenith-hover">
                     <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3"><img src="image_0a446e.png" class="w-full h-full object-cover"></div>
                     <h4 class="text-sm font-bold text-white">Dr. Santanu Das</h4>
                     <p class="text-[11px] text-purple-400">Professor & Registrar</p>
                 </div>
-                <!-- Faculty Member 2 -->
                 <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center group zenith-hover">
                     <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3"><img src="image_004823.jpg" class="w-full h-full object-cover"></div>
                     <h4 class="text-sm font-bold text-white">Dr. Tridibesh Das</h4>
                     <p class="text-[11px] text-purple-400">Professor & HOD</p>
                 </div>
-                <!-- Placeholders -->
                 <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px] flex items-center justify-center min-h-[140px]">Upcoming Profile</div>
                 <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px] flex items-center justify-center min-h-[140px]">Upcoming Profile</div>
                 <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px] flex items-center justify-center min-h-[140px]">Upcoming Profile</div>
@@ -204,10 +201,8 @@
         </div>
     </div>
 
-    <!-- Main Responsive Layout Container -->
     <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10 box-border">
         
-        <!-- Hero Section -->
         <main class="text-center w-full mb-32 relative py-4 hero-glow reveal-element">
             <div class="space-y-2 mb-6">
                 <span class="block text-sm md:text-lg font-black tracking-[0.2em] text-purple-400 uppercase">Department of Mechanical Engineering</span>
@@ -225,24 +220,20 @@
             </p>
             
             <div class="mt-8">
-                <!-- Upgraded Glowing Pop Button Action link -->
-                <a href="#read-now" class="zenith-btn-glow bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs inline-block shadow-lg shadow-purple-500/20">Read Full Magazine</a>
+                <a href="#read-now" class="zenith-btn-glow zenith-btn-ghost px-12 py-4 rounded-full font-bold uppercase tracking-widest text-xs inline-block shadow-lg">Read Full Magazine</a>
             </div>
         </main>
 
-        <!-- The Spirit of SPECTRUM Section -->
         <section id="spirit" class="w-full mb-32 scroll-mt-24 reveal-element">
             <div class="text-center mb-12">
                 <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white uppercase">The Spirit of Spectrum</h2>
                 <div class="h-1 w-12 bg-purple-500 mx-auto mt-3 rounded-full"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Upgraded Zenith Glowing Hover Box -->
                 <div class="p-6 md:p-8 rounded-2xl glass-card zenith-hover">
                     <h3 class="text-lg md:text-xl font-bold text-white mb-2">Technical Evolution</h3>
                     <p class="text-slate-400 text-xs md:text-sm leading-relaxed">SPECTRUM serves as a timeline capturing our shift toward modern industrial frontiers—reflecting student contributions in computational design, automation, thermal labs, and advanced automotive builds.</p>
                 </div>
-                <!-- Upgraded Zenith Glowing Hover Box -->
                 <div class="p-6 md:p-8 rounded-2xl glass-card zenith-hover">
                     <h3 class="text-lg md:text-xl font-bold text-white mb-2">Creative Spectrum</h3>
                     <p class="text-slate-400 text-xs md:text-sm leading-relaxed">Beyond complex mathematical equations and machine blueprints lies a vibrant stream of literature, fine art, photography, and personal reflections that bind the batch together as a family.</p>
@@ -250,7 +241,6 @@
             </div>
         </section>
 
-        <!-- From the Desk of the Faculty Section -->
         <section id="administration" class="w-full mb-32 scroll-mt-24 reveal-element">
             <div class="text-center mb-12">
                 <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white uppercase">From the Desk of the Faculty</h2>
@@ -258,7 +248,6 @@
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Current HOD Card equipped with Zenith Hover Mechanics -->
                 <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center zenith-hover">
                     <img src="image_004823.jpg" alt="Dr. Tridibesh Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 shadow-xl">
                     <div class="text-center md:text-left space-y-2">
@@ -267,7 +256,6 @@
                         <p class="text-slate-300 text-xs italic">"Engineering is about cultivating an adaptive mindset to solve complex constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research with expressive creativity."</p>
                     </div>
                 </div>
-                <!-- Registrar Card equipped with Zenith Hover Mechanics -->
                 <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center zenith-hover">
                     <img src="image_0a446e.png" alt="Dr. Santanu Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 shadow-xl">
                     <div class="text-center md:text-left space-y-2">
@@ -279,7 +267,6 @@
             </div>
         </section>
 
-        <!-- Native Interactive Flipbook Container Module -->
         <section id="read-now" class="w-full mb-32 scroll-mt-24 reveal-element">
             <div class="text-center mb-10">
                 <h2 class="text-2xl font-bold text-white tracking-widest uppercase">Spectrum Digital Edition</h2>
@@ -298,26 +285,26 @@
             </div>
         </section>
 
-        <!-- Footer Area -->
         <footer class="w-full py-12 text-center text-xs text-slate-500 tracking-widest uppercase border-t border-purple-950/30">
             &copy; 2026 Department of Mechanical Engineering, KGEC. All Rights Reserved.
         </footer>
     </div>
 
-    <!-- Operational Engine Logic -->
     <script>
         $(window).on('load', function() {
-            // --- Zenith Preloader Sequence Control ---
+            // --- HIGH-FIDELITY FAST DISSOLVING PRELOADER SEQUENCER ---
             setTimeout(() => {
+                // Dissolve out text node cleanly
                 $('.preload-text-wrapper').addClass('preload-text-dissolve');
+                
+                // Dissolve out container layer simultaneously with no vertical layout movement lines
                 setTimeout(() => {
                     $('#site-preloader').addClass('loader-panel-exit');
-                    // Fire scroll reveal system right after workspace reveals
                     initScrollReveal();
-                }, 600);
-            }, 2200);
+                }, 400); 
+            }, 1000); // Tighter 1-second stay time mapping reference parameters
 
-            // --- FLIPBOOK SIZING STABILIZER ---
+            // FLIPBOOK CORE MODULE
             const viewport = $('#magazine-viewport');
             const magazine = $('#native-magazine');
 
@@ -350,11 +337,10 @@
                     }
                 }
             });
-            
             magazine.addClass('showing-first-page');
         });
 
-        // --- INTERSECTION OBSERVER ENTRANCE MOTOR ---
+        // --- SCROLL INTERSECTION MODULE ---
         function initScrollReveal() {
             const revealTargets = document.querySelectorAll('.reveal-element');
             const observerOptions = {
@@ -375,7 +361,7 @@
             revealTargets.forEach(target => observer.observe(target));
         }
 
-        // 3-Dot Menu Dropdown Logic
+        // Dropdown Menu Link Toggles
         const menuButton = document.getElementById('menu-button');
         const dropdownMenu = document.getElementById('dropdown-menu');
 
@@ -392,7 +378,7 @@
             }
         });
 
-        // Faculty Overlay Control Links
+        // Faculty Popup Handlers
         const facultyBtn = $('#faculty-modal-open'), modal = $('#faculty-modal'), close = $('#faculty-modal-close');
         facultyBtn.on('click', () => { modal.removeClass('hidden'); setTimeout(()=>modal.css('opacity', 1),10); });
         close.on('click', () => { modal.css('opacity', 0); setTimeout(()=>modal.addClass('hidden'),300); });
@@ -408,7 +394,7 @@
             setTimeout(() => { dropdownMenu.classList.add('hidden'); }, 150);
         }
 
-        // Ambient Background Particle Engine
+        // Particle Canvas Vector Core
         const canvas = document.getElementById('ambient-particles'), ctx = canvas.getContext('2d');
         let parts = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
