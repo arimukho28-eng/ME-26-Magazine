@@ -113,8 +113,7 @@
             transition: transform 0.4s ease-in-out;
             cursor: pointer;
         }
-        .showing-first-page { transform: translateX(25%); }
-        .showing-last-page { transform: translateX(-25%); }
+        
 
         #native-magazine .page {
             background-color: #0f111a;
@@ -319,25 +318,13 @@
             magazine.turn({
                 width: calculatedWidth,
                 height: calculatedHeight,
-                autoCenter: false, 
-                display: 'double',
+                autoCenter: true, 
+                display: window.innerWidth < 768 ? 'single' : 'double',
                 acceleration: true,
                 gradients: true,
                 elevation: 60,
-                when: {
-                    turning: function(event, targetPage) {
-                        const totalPages = magazine.turn('pages');
-                        if (targetPage === 1) {
-                            magazine.addClass('showing-first-page').removeClass('showing-last-page');
-                        } else if (targetPage === totalPages) {
-                            magazine.addClass('showing-last-page').removeClass('showing-first-page');
-                        } else {
-                            magazine.removeClass('showing-first-page showing-last-page');
-                        }
-                    }
-                }
-            });
-            magazine.addClass('showing-first-page');
+                });
+            
         });
 
         // --- SCROLL INTERSECTION MODULE ---
