@@ -25,7 +25,7 @@
             align-items: center;
             justify-content: center;
             padding: 24px;
-            transition: transform 1.1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1.1s cubic-bezier(0.85, 0, 0.15, 1);
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.2s ease;
         }
 
         .preload-text-wrapper {
@@ -39,8 +39,6 @@
 
         .loader-panel-exit {
             transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
         }
 
         @keyframes textFlyUp {
@@ -52,6 +50,20 @@
             0% { transform: translateY(0); opacity: 1; filter: blur(0); }
             100% { transform: translateY(-20px); opacity: 0; filter: blur(12px); }
         }
+
+        /* --- SMOOTH SCROLL ENTRANCE ANIMATIONS (ZENITH INSPIRED) --- */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            filter: blur(4px);
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, filter 0.8s ease;
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
         
         /* --- NATIVE FLIPBOOK CENTER LOGIC --- */
         #magazine-viewport {
@@ -61,13 +73,10 @@
             align-items: center;
             perspective: 2000px;
         }
-        
         #native-magazine {
             transition: transform 0.4s ease-in-out;
             cursor: pointer;
         }
-        
-        /* Smoothly center the first page and last page single views */
         .showing-first-page { transform: translateX(25%); }
         .showing-last-page { transform: translateX(-25%); }
 
@@ -158,11 +167,10 @@
 
     <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10 box-border">
         
-        <section class="text-center w-full mb-32 relative py-4 hero-glow">
+        <main class="text-center w-full mb-32 relative py-4 hero-glow reveal-element">
             <div class="space-y-2 mb-6">
                 <span class="block text-sm md:text-lg font-black tracking-[0.2em] text-purple-400 uppercase">Department of Mechanical Engineering</span>
-                <span class="block text-xs font-semibold tracking-widest text-slate-500 uppercase italic">Presents</span>
-                <span class="block text-sm md:text-base font-bold tracking-[0.15em] uppercase text-purple-300 glow-text">Official Magazine '26</span>
+                <span class="block text-sm md:text-base font-bold tracking-[0.15em] uppercase text-purple-300 glow-text pt-2">Official Magazine '26</span>
             </div>
             
             <h1 class="hero-title font-black text-white glow-text uppercase">SPECTRUM</h1>
@@ -178,45 +186,52 @@
             <div class="mt-8">
                 <a href="#read-now" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-all inline-block shadow-lg shadow-purple-500/20">Read Full Magazine</a>
             </div>
-        </section>
+        </main>
 
-        <section id="spirit" class="w-full mb-32 scroll-mt-24">
+        <section id="spirit" class="w-full mb-32 scroll-mt-24 reveal-element">
             <div class="text-center mb-12">
                 <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white uppercase">The Spirit of Spectrum</h2>
                 <div class="h-1 w-12 bg-purple-500 mx-auto mt-3 rounded-full"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="p-6 md:p-8 rounded-2xl glass-card transition-all duration-300">
+                <div class="p-6 md:p-8 rounded-2xl glass-card hover:border-purple-500/30 transition-all duration-300">
                     <h3 class="text-lg md:text-xl font-bold text-white mb-2">Technical Evolution</h3>
                     <p class="text-slate-400 text-xs md:text-sm leading-relaxed">SPECTRUM serves as a timeline capturing our shift toward modern industrial frontiers—reflecting student contributions in computational design, automation, thermal labs, and advanced automotive builds.</p>
                 </div>
-                <div class="p-6 md:p-8 rounded-2xl glass-card transition-all duration-300">
+                <div class="p-6 md:p-8 rounded-2xl glass-card hover:border-purple-500/30 transition-all duration-300">
                     <h3 class="text-lg md:text-xl font-bold text-white mb-2">Creative Spectrum</h3>
                     <p class="text-slate-400 text-xs md:text-sm leading-relaxed">Beyond complex mathematical equations and machine blueprints lies a vibrant stream of literature, fine art, photography, and personal reflections that bind the batch together as a family.</p>
                 </div>
             </div>
         </section>
 
-        <section id="administration" class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 mb-32 scroll-mt-24">
-            <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center">
-                <img src="image_004823.jpg" alt="Dr. Tridibesh Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 shadow-xl">
-                <div class="text-center md:text-left space-y-2">
-                    <span class="text-[10px] text-purple-400 font-mono uppercase bg-purple-500/10 px-2 py-0.5 rounded">HOD's Column</span>
-                    <h3 class="text-xl font-bold text-white">Dr. Tridibesh Das</h3>
-                    <p class="text-slate-300 text-xs italic">"Engineering is about cultivating an adaptive mindset to solve complex constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research with expressive creativity."</p>
-                </div>
+        <section id="administration" class="w-full mb-32 scroll-mt-24 reveal-element">
+            <div class="text-center mb-12">
+                <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white uppercase">From the Desk of the Faculty</h2>
+                <div class="h-1 w-12 bg-indigo-500 mx-auto mt-3 rounded-full"></div>
             </div>
-            <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center">
-                <img src="image_0a446e.png" alt="Dr. Santanu Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 shadow-xl">
-                <div class="text-center md:text-left space-y-2">
-                    <span class="text-[10px] text-indigo-400 font-mono uppercase bg-indigo-500/10 px-2 py-0.5 rounded">Registrar's Column</span>
-                    <h3 class="text-xl font-bold text-white">Dr. Santanu Das</h3>
-                    <p class="text-slate-300 text-xs italic">"This publication legacy remains a testament to our excellence and the deep practical evolution of our engineering students across generations."</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center hover:border-purple-500/30 transition-all duration-300">
+                    <img src="image_004823.jpg" alt="Dr. Tridibesh Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 shadow-xl">
+                    <div class="text-center md:text-left space-y-2">
+                        <span class="text-[10px] text-purple-400 font-mono uppercase bg-purple-500/10 px-2 py-0.5 rounded">HOD's Column</span>
+                        <h3 class="text-xl font-bold text-white">Dr. Tridibesh Das</h3>
+                        <p class="text-slate-300 text-xs italic">"Engineering is about cultivating an adaptive mindset to solve complex constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research with expressive creativity."</p>
+                    </div>
+                </div>
+                <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center hover:border-indigo-500/30 transition-all duration-300">
+                    <img src="image_0a446e.png" alt="Dr. Santanu Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 shadow-xl">
+                    <div class="text-center md:text-left space-y-2">
+                        <span class="text-[10px] text-indigo-400 font-mono uppercase bg-indigo-500/10 px-2 py-0.5 rounded">Registrar's Column</span>
+                        <h3 class="text-xl font-bold text-white">Dr. Santanu Das</h3>
+                        <p class="text-slate-300 text-xs italic">"This publication legacy remains a testament to our excellence and the deep practical evolution of our engineering students across generations."</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="read-now" class="w-full mb-32 scroll-mt-24">
+        <section id="read-now" class="w-full mb-32 scroll-mt-24 reveal-element">
             <div class="text-center mb-10">
                 <h2 class="text-2xl font-bold text-white tracking-widest uppercase">Spectrum Digital Edition</h2>
                 <p class="text-purple-400/80 text-xs font-mono mt-1 uppercase tracking-widest">Natively Rendered • Zero Ads • No Watermark</p>
@@ -246,27 +261,27 @@
                 $('.preload-text-wrapper').addClass('preload-text-dissolve');
                 setTimeout(() => {
                     $('#site-preloader').addClass('loader-panel-exit');
+                    // Initialize scroll reveal triggers instantly after preloader slide-out
+                    initScrollReveal();
                 }, 600);
             }, 2200);
 
-            // --- FLIPBOOK ENGINE ENGINE INITIALIZATION MODULE (PC & MOBILE LOCK) ---
+            // --- FLIPBOOK ENGINE RE-FACTOR ENGINE ---
             const viewport = $('#magazine-viewport');
             const magazine = $('#native-magazine');
 
-            // Force dynamic absolute responsive measurements inside the viewport boundaries
             let calculatedHeight = viewport.height() - 40;
-            let calculatedWidth = calculatedHeight * 1.45; // Aspect metric profile for standard double panels
+            let calculatedWidth = calculatedHeight * 1.45;
 
             if (calculatedWidth > viewport.width() * 0.95) {
                 calculatedWidth = viewport.width() * 0.95;
                 calculatedHeight = calculatedWidth / 1.45;
             }
 
-            // Fire TurnJS explicit compilation
             magazine.turn({
                 width: calculatedWidth,
                 height: calculatedHeight,
-                autoCenter: false, // Turned off to grant explicit control over structural shifts
+                autoCenter: false, 
                 display: 'double',
                 acceleration: true,
                 gradients: true,
@@ -274,8 +289,6 @@
                 when: {
                     turning: function(event, targetPage) {
                         const totalPages = magazine.turn('pages');
-                        
-                        // Dynamic Translation Rules to keep single sheets perfectly centered in space
                         if (targetPage === 1) {
                             magazine.addClass('showing-first-page').removeClass('showing-last-page');
                         } else if (targetPage === totalPages) {
@@ -287,11 +300,31 @@
                 }
             });
             
-            // Set first page to cover centered transformation sequence
             magazine.addClass('showing-first-page');
         });
 
-        // 3-Dot Dropdown Menu Toggles
+        // --- HIGH-FIDELITY INTERSECTION OBSERVER ENGINE ---
+        function initScrollReveal() {
+            const revealTargets = document.querySelectorAll('.reveal-element');
+            const observerOptions = {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Structural animation lock once fired
+                    }
+                });
+            }, observerOptions);
+
+            revealTargets.forEach(target => observer.observe(target));
+        }
+
+        // 3-Dot Dropdown Toggles
         const menuButton = document.getElementById('menu-button');
         const dropdownMenu = document.getElementById('dropdown-menu');
 
@@ -308,7 +341,7 @@
             }
         });
 
-        // Faculty Overlay Control Hooks
+        // Faculty Popup Window Controllers
         const facultyBtn = $('#faculty-modal-open'), modal = $('#faculty-modal'), close = $('#faculty-modal-close');
         facultyBtn.on('click', () => { modal.removeClass('hidden'); setTimeout(()=>modal.css('opacity', 1),10); });
         close.on('click', () => { modal.css('opacity', 0); setTimeout(()=>modal.addClass('hidden'),300); });
