@@ -61,18 +61,22 @@
             align-items: center;
             perspective: 2000px;
         }
+        
         #native-magazine {
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.4s ease-in-out;
             cursor: pointer;
         }
-        .showing-cover { transform: translateX(25%); } 
+        
+        /* Smoothly center the first page and last page single views */
+        .showing-first-page { transform: translateX(25%); }
+        .showing-last-page { transform: translateX(-25%); }
 
         #native-magazine .page {
             background-color: #0f111a;
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
         }
 
         .hero-title {
@@ -154,7 +158,7 @@
 
     <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10 box-border">
         
-        <main class="text-center w-full mb-32 relative py-4 hero-glow">
+        <section class="text-center w-full mb-32 relative py-4 hero-glow">
             <div class="space-y-2 mb-6">
                 <span class="block text-sm md:text-lg font-black tracking-[0.2em] text-purple-400 uppercase">Department of Mechanical Engineering</span>
                 <span class="block text-xs font-semibold tracking-widest text-slate-500 uppercase italic">Presents</span>
@@ -174,7 +178,7 @@
             <div class="mt-8">
                 <a href="#read-now" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-all inline-block shadow-lg shadow-purple-500/20">Read Full Magazine</a>
             </div>
-        </main>
+        </section>
 
         <section id="spirit" class="w-full mb-32 scroll-mt-24">
             <div class="text-center mb-12">
@@ -193,31 +197,13 @@
             </div>
         </section>
 
-        <section id="read-now" class="w-full mb-32 scroll-mt-24">
-            <div class="text-center mb-10">
-                <h2 class="text-2xl font-bold text-white tracking-widest uppercase">Spectrum Digital Edition</h2>
-                <p class="text-purple-400/80 text-xs font-mono mt-1 uppercase tracking-widest">Natively Rendered • Zero Ads • No Watermark</p>
-            </div>
-            
-            <div id="magazine-viewport" class="w-full h-[400px] md:h-[680px] overflow-hidden rounded-2xl border border-purple-900/30 bg-[#020306] shadow-2xl relative">
-                <div id="native-magazine">
-                    <div class="page" style="background-image:url('page1.jpg');"></div>
-                    <div class="page" style="background-image:url('page2.jpg');"></div>
-                    <div class="page" style="background-image:url('page3.jpg');"></div>
-                    <div class="page" style="background-image:url('page4.jpg');"></div>
-                    <div class="page" style="background-image:url('page5.jpg');"></div>
-                    <div class="page" style="background-image:url('page6.jpg');"></div>
-                </div>
-            </div>
-        </section>
-
         <section id="administration" class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 mb-32 scroll-mt-24">
             <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center">
                 <img src="image_004823.jpg" alt="Dr. Tridibesh Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 shadow-xl">
                 <div class="text-center md:text-left space-y-2">
                     <span class="text-[10px] text-purple-400 font-mono uppercase bg-purple-500/10 px-2 py-0.5 rounded">HOD's Column</span>
                     <h3 class="text-xl font-bold text-white">Dr. Tridibesh Das</h3>
-                    <p class="text-slate-300 text-xs italic">"Engineering is about cultivating an adaptive mindset to solve complex constraints. This publication highlights the commendable tenacity of our students."</p>
+                    <p class="text-slate-300 text-xs italic">"Engineering is about cultivating an adaptive mindset to solve complex constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research with expressive creativity."</p>
                 </div>
             </div>
             <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center">
@@ -230,6 +216,24 @@
             </div>
         </section>
 
+        <section id="read-now" class="w-full mb-32 scroll-mt-24">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-bold text-white tracking-widest uppercase">Spectrum Digital Edition</h2>
+                <p class="text-purple-400/80 text-xs font-mono mt-1 uppercase tracking-widest">Natively Rendered • Zero Ads • No Watermark</p>
+            </div>
+            
+            <div id="magazine-viewport" class="w-full h-[460px] md:h-[640px] overflow-hidden rounded-2xl border border-purple-900/30 bg-[#020306] shadow-2xl relative flex items-center justify-center">
+                <div id="native-magazine">
+                    <div class="page" style="background-image:url('page1.jpg');"></div>
+                    <div class="page" style="background-image:url('page2.jpg');"></div>
+                    <div class="page" style="background-image:url('page3.jpg');"></div>
+                    <div class="page" style="background-image:url('page4.jpg');"></div>
+                    <div class="page" style="background-image:url('page5.jpg');"></div>
+                    <div class="page" style="background-image:url('page6.jpg');"></div>
+                </div>
+            </div>
+        </section>
+
         <footer class="w-full py-12 text-center text-xs text-slate-500 tracking-widest uppercase border-t border-purple-950/30">
             &copy; 2026 Department of Mechanical Engineering, KGEC. All Rights Reserved.
         </footer>
@@ -237,7 +241,7 @@
 
     <script>
         $(window).on('load', function() {
-            // Zenith Preloader Sequence Control
+            // --- Zenith Preloader Sequence Control ---
             setTimeout(() => {
                 $('.preload-text-wrapper').addClass('preload-text-dissolve');
                 setTimeout(() => {
@@ -245,43 +249,49 @@
                 }, 600);
             }, 2200);
 
-            // FLIPBOOK PC & MOBILE STABILIZER ENGINE
-            const container = $('#magazine-viewport');
-            let h = container.height() - 40;
-            let w = h * 1.4; // Correct landscape book printing ratio
-
-            if (w > container.width() * 0.95) {
-                w = container.width() * 0.95;
-                h = w / 1.4;
-            }
-
+            // --- FLIPBOOK ENGINE ENGINE INITIALIZATION MODULE (PC & MOBILE LOCK) ---
+            const viewport = $('#magazine-viewport');
             const magazine = $('#native-magazine');
 
+            // Force dynamic absolute responsive measurements inside the viewport boundaries
+            let calculatedHeight = viewport.height() - 40;
+            let calculatedWidth = calculatedHeight * 1.45; // Aspect metric profile for standard double panels
+
+            if (calculatedWidth > viewport.width() * 0.95) {
+                calculatedWidth = viewport.width() * 0.95;
+                calculatedHeight = calculatedWidth / 1.45;
+            }
+
+            // Fire TurnJS explicit compilation
             magazine.turn({
-                width: w,
-                height: h,
-                autoCenter: false, // Turned off to allow explicit cover animation shifting
+                width: calculatedWidth,
+                height: calculatedHeight,
+                autoCenter: false, // Turned off to grant explicit control over structural shifts
                 display: 'double',
                 acceleration: true,
                 gradients: true,
-                elevation: 50,
+                elevation: 60,
                 when: {
-                    turning: function(e, page) {
-                        // Dynamic Offset Shifting for single cover center styling rules
-                        if (page == 1 || page == magazine.turn('pages')) {
-                            magazine.addClass('showing-cover');
+                    turning: function(event, targetPage) {
+                        const totalPages = magazine.turn('pages');
+                        
+                        // Dynamic Translation Rules to keep single sheets perfectly centered in space
+                        if (targetPage === 1) {
+                            magazine.addClass('showing-first-page').removeClass('showing-last-page');
+                        } else if (targetPage === totalPages) {
+                            magazine.addClass('showing-last-page').removeClass('showing-first-page');
                         } else {
-                            magazine.removeClass('showing-cover');
+                            magazine.removeClass('showing-first-page showing-last-page');
                         }
                     }
                 }
             });
             
-            // Set first page to cover position
-            magazine.addClass('showing-cover');
+            // Set first page to cover centered transformation sequence
+            magazine.addClass('showing-first-page');
         });
 
-        // 3-Dot Dropdown Logic
+        // 3-Dot Dropdown Menu Toggles
         const menuButton = document.getElementById('menu-button');
         const dropdownMenu = document.getElementById('dropdown-menu');
 
@@ -298,7 +308,7 @@
             }
         });
 
-        // Faculty Popup Window Controllers
+        // Faculty Overlay Control Hooks
         const facultyBtn = $('#faculty-modal-open'), modal = $('#faculty-modal'), close = $('#faculty-modal-close');
         facultyBtn.on('click', () => { modal.removeClass('hidden'); setTimeout(()=>modal.css('opacity', 1),10); });
         close.on('click', () => { modal.css('opacity', 0); setTimeout(()=>modal.addClass('hidden'),300); });
@@ -314,7 +324,7 @@
             setTimeout(() => { dropdownMenu.classList.add('hidden'); }, 150);
         }
 
-        // Ambient Background Particle Vector Engine
+        // Ambient Background Particle Vector System
         const canvas = document.getElementById('ambient-particles'), ctx = canvas.getContext('2d');
         let parts = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
