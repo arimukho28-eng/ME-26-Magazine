@@ -4,57 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPECTRUM - Mechanical Engineering Magazine</title>
-    <!-- Tailwind CSS for high-fidelity styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styling mapping the deep palette tones from image_0a482e.png */
         .premium-bg {
-            background-color: #0b0d19;
-            background-image: radial-gradient(circle at 50% -20%, #3b336a 0%, #0b0d19 65%);
+            background-color: #05070f;
         }
         .glass-card {
-            background: rgba(30, 27, 57, 0.4);
+            background: rgba(20, 18, 42, 0.45);
             border: 1px solid rgba(139, 92, 246, 0.15);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(14px);
+        }
+        .glass-nav {
+            background: rgba(5, 7, 15, 0.75);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
         }
         .glow-text {
-            text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
+            text-shadow: 0 0 35px rgba(167, 139, 250, 0.5);
+        }
+        .hero-glow {
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%);
         }
     </style>
 </head>
-<body class="premium-bg text-gray-100 font-sans antialiased min-h-screen selection:bg-purple-500/30">
+<body class="premium-bg text-gray-100 font-sans antialiased min-h-screen selection:bg-purple-500/30 pt-24 relative overflow-x-hidden">
 
-    <!-- Navigation Header Bar -->
-    <header class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center border-b border-purple-950/40">
-        <div class="flex items-center space-x-4">
-            <!-- College Logo from KGEC LOGO w.png -->
-            <img src="KGEC_LOGO_w.png" alt="KGEC Logo" class="h-12 w-auto object-contain brightness-110">
-            <div class="h-8 w-[1px] bg-purple-900/60"></div>
-            <span class="font-black tracking-widest text-xl text-white glow-text">SPECTRUM</span>
+    <canvas id="ambient-particles" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="KGEC_LOGO_w.png" alt="KGEC Logo" class="h-10 w-auto object-contain brightness-110">
+                <div class="h-6 w-[1px] bg-purple-900/60"></div>
+                <span class="font-bold tracking-widest text-xs uppercase text-slate-400">Mechanical Engineering Department</span>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative inline-block text-left">
+                    <button id="menu-button" class="flex items-center text-gray-400 hover:text-white p-2 rounded-full hover:bg-purple-500/10 transition-all focus:outline-none" aria-label="Options">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        </svg>
+                    </button>
+
+                    <div id="dropdown-menu" class="hidden absolute right-0 mt-3 w-48 rounded-xl glass-card shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden origin-top-right transition-all duration-200 transform scale-95 opacity-0 z-50">
+                        <div class="py-1 bg-[#090a14]/95" role="menu">
+                            <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Home</a>
+                            <a href="#spirit" class="block px-4 py-3 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">The Spirit</a>
+                            <a href="#administration" class="block px-4 py-3 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Desk Messages</a>
+                            <div class="border-t border-purple-950/40 my-1"></div>
+                            <a href="#read-now" class="block px-4 py-3 text-sm text-purple-400 font-medium hover:bg-purple-600/20 hover:text-purple-300 transition-colors">Launch Flipbook</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <a href="#read-now" class="text-xs font-semibold tracking-widest uppercase bg-purple-500/10 text-purple-300 px-5 py-2.5 rounded-full border border-purple-500/30 hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-600 hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/10">
-            Read Magazine
-        </a>
     </header>
 
-    <!-- Main Landing Container -->
-    <main class="max-w-6xl mx-auto px-6 pt-16 pb-20">
+    <main class="max-w-6xl mx-auto px-6 pt-12 pb-20 relative z-10">
         
-        <!-- Hero Title Section -->
-        <div class="text-center max-w-3xl mx-auto space-y-6 mb-20">
-            <span class="text-xs font-bold tracking-widest text-purple-400 uppercase bg-purple-500/5 px-4 py-1.5 rounded-full border border-purple-500/10">Departmental Publication</span>
-            <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white leading-none">
-                The Core of <br class="hidden md:block">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-400 to-indigo-400">Mechanical Spirit.</span>
+        <div class="text-center max-w-4xl mx-auto space-y-8 mb-32 relative py-12 hero-glow rounded-full">
+            <span class="text-xs font-bold tracking-widest text-purple-400 uppercase bg-purple-500/10 px-4 py-1.5 rounded-full border border-purple-500/20">Official Departmental Publication</span>
+            
+            <h1 class="text-7xl md:text-9xl font-black tracking-tighter text-white leading-none tracking-wide select-none glow-text">
+                SPECTRUM
             </h1>
+            
             <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
-                Welcome to the digital portal of <span class="text-white font-medium">SPECTRUM</span>. A canvas showcasing the technical brilliance, creative paradigms, and collective voice of our engineering community.
+                The ultimate digital portal of Kalyani Government Engineering College. Showcasing the technical brilliance, creative paradigms, and collective voice of the Mechanical Engineering Department.
             </p>
+
+            <div class="pt-4">
+                <a href="#read-now" class="inline-block text-sm font-bold tracking-widest uppercase bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-full hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 shadow-xl shadow-purple-500/20 hover:shadow-purple-500/40 transform hover:-translate-y-0.5">
+                    Read Full Magazine
+                </a>
+            </div>
         </div>
 
-        <!-- The Spirit of SPECTRUM Section (Replacing Old Tech Tabs) -->
-        <section class="mb-24">
-            <div class="text-center mb-10">
+        <section id="spirit" class="mb-32 scroll-mt-24">
+            <div class="text-center mb-12">
                 <h2 class="text-2xl font-bold tracking-wide text-white uppercase">The Spirit of Spectrum</h2>
                 <div class="h-1 w-12 bg-purple-500 mx-auto mt-3 rounded-full"></div>
             </div>
@@ -74,50 +103,150 @@
             </div>
         </section>
 
-        <!-- From the HOD's Desk Section -->
-        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-12 px-8 rounded-3xl glass-card border-purple-500/20 mb-24 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/5 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <!-- HOD Portrait Frame (image_0a446e.png) -->
-            <div class="md:col-span-4 flex justify-center">
-                <div class="relative group">
-                    <div class="absolute -inset-1.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
-                    <img src="image_0a446e.png" alt="Head of Department" class="relative rounded-2xl w-56 h-56 object-cover border border-purple-500/20 filter contrast-105 grayscale-[20%] hover:grayscale-0 transition-all duration-300">
-                </div>
+        <section id="administration" class="space-y-8 mb-32 scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl font-bold tracking-wide text-white uppercase">From the Desk of Mentors</h2>
+                <div class="h-1 w-12 bg-indigo-500 mx-auto mt-3 rounded-full"></div>
             </div>
-            
-            <!-- HOD Message -->
-            <div class="md:col-span-8 space-y-4">
-                <span class="text-xs font-mono tracking-widest text-purple-400 uppercase">Message Corner</span>
-                <h2 class="text-3xl font-extrabold text-white tracking-tight">From the HOD's Desk</h2>
-                <p class="text-slate-300 text-sm leading-relaxed font-light italic">
-                    "Engineering is not merely about understanding machines; it is about cultivating an adaptive mindset to solve complex, real-world constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research, hands-on fabrication, and expressive creativity. I am proud to present this issue as a true testament to our department's ongoing legacy of excellence."
-                </p>
-                <div class="pt-2">
-                    <p class="text-sm font-bold text-white tracking-wide">Head of the Department</p>
-                    <p class="text-xs text-slate-400">Mechanical Engineering Department</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="p-8 rounded-3xl glass-card border-purple-500/20 flex flex-col md:flex-row gap-6 items-center relative overflow-hidden">
+                    <img src="image_004823.jpg" alt="Dr. Tridibesh Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 filter contrast-105 shadow-xl">
+                    <div class="space-y-3 flex-1 text-center md:text-left">
+                        <span class="text-[10px] font-mono tracking-widest text-purple-400 uppercase bg-purple-500/10 px-2.5 py-1 rounded-md">Current HOD Message</span>
+                        <h3 class="text-2xl font-bold text-white tracking-tight">Dr. Tridibesh Das</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed font-light italic">
+                            "Engineering is about cultivating an adaptive mindset to solve complex constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research with expressive creativity."
+                        </p>
+                        <div>
+                            <p class="text-xs font-bold text-white">Head of the Department</p>
+                            <p class="text-[11px] text-slate-400">Mechanical Engineering Department, KGEC</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8 rounded-3xl glass-card border-purple-500/20 flex flex-col md:flex-row gap-6 items-center relative overflow-hidden">
+                    <img src="image_0a446e.png" alt="Dr. Santanu Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 filter contrast-105 shadow-xl">
+                    <div class="space-y-3 flex-1 text-center md:text-left">
+                        <span class="text-[10px] font-mono tracking-widest text-indigo-400 uppercase bg-indigo-500/10 px-2.5 py-1 rounded-md">Registrar's Column</span>
+                        <h3 class="text-2xl font-bold text-white tracking-tight">Dr. Santanu Das</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed font-light italic">
+                            "This ongoing publication legacy remains an absolute testament to our department's enduring excellence. It proudly reflects both standard academic milestones and the deep practical evolution of our engineering students."
+                        </p>
+                        <div>
+                            <p class="text-xs font-bold text-white">Registrar, KGEC</p>
+                            <p class="text-[11px] text-slate-400">Former Head of Mechanical Engineering Department</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Interactive Flipbook Section Container -->
-        <section id="read-now" class="scroll-mt-10">
+        <section id="read-now" class="scroll-mt-24">
             <div class="text-center mb-10">
                 <h2 class="text-2xl md:text-3xl font-bold text-white tracking-wide">SPECTRUM DIGITAL EDITION</h2>
                 <p class="text-purple-400/80 text-xs font-mono mt-2 uppercase tracking-widest">Interactive Flipbook Experience</p>
             </div>
             
-            <!-- Clean Layout Wrapper for your Active Heyzine Link -->
-            <div class="w-full aspect-[4/3] md:aspect-[16/10] max-w-5xl mx-auto rounded-2xl overflow-hidden border border-purple-900/30 bg-[#080911] shadow-2xl shadow-purple-950/50 p-1">
+            <div class="w-full aspect-[4/3] md:aspect-[16/10] max-w-5xl mx-auto rounded-2xl overflow-hidden border border-purple-900/30 bg-[#04050a] shadow-2xl shadow-purple-950/60 p-1">
                 <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="w-full h-full rounded-xl border-none bg-transparent" src="https://heyzine.com/flip-book/346fa9d6e8.html"></iframe>
             </div>
         </section>
     </main>
 
-    <!-- Footer Area -->
-    <footer class="max-w-6xl mx-auto px-6 py-12 text-center text-xs text-slate-500 tracking-widest uppercase border-t border-purple-950/30">
-        &copy; 2026 Department of Mechanical Engineering. All Rights Reserved.
+    <footer class="max-w-6xl mx-auto px-6 py-12 text-center text-xs text-slate-500 tracking-widest uppercase border-t border-purple-950/30 relative z-10">
+        &copy; 2026 Department of Mechanical Engineering, KGEC. All Rights Reserved.
     </footer>
+
+    <script>
+        // --- 3-Dot Dropdown Logic ---
+        const menuButton = document.getElementById('menu-button');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+
+        menuButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const isHidden = dropdownMenu.classList.contains('hidden');
+            if (isHidden) {
+                dropdownMenu.classList.remove('hidden');
+                setTimeout(() => {
+                    dropdownMenu.classList.remove('scale-95', 'opacity-0');
+                    dropdownMenu.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            } else {
+                hideMenu();
+            }
+        });
+
+        document.addEventListener('click', () => {
+            if (!dropdownMenu.classList.contains('hidden')) hideMenu();
+        });
+
+        function hideMenu() {
+            dropdownMenu.classList.remove('scale-100', 'opacity-100');
+            dropdownMenu.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { dropdownMenu.classList.add('hidden'); }, 150);
+        }
+
+        // --- Premium Interactive Micro-Particle Background Animation Engine ---
+        const canvas = document.getElementById('ambient-particles');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.25;
+                this.speedY = (Math.random() - 0.5) * 0.25;
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = '#8b5cf6';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#a78bfa';
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function init() {
+            const numParticles = Math.min(60, Math.floor((canvas.width * canvas.height) / 25000));
+            for (let i = 0; i < numParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
 
 </body>
 </html>
