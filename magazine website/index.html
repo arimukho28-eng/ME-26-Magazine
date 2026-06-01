@@ -193,15 +193,15 @@
         </div>
     </div>
 
-    <main class="max-w-6xl mx-auto px-6 pt-12 pb-20 relative z-10">
+    <main class="w-full max-w-[100vw] px-6 pt-6 pb-20 relative z-10">
         
-        <div class="text-center max-w-4xl mx-auto space-y-8 mb-32 relative py-12 hero-glow rounded-full">
-            <div class="space-y-2">
-                <span class="block text-sm font-bold tracking-widest text-purple-400 uppercase">Department of Mechanical Engineering</span>
-                <span class="block text-xs font-medium tracking-widest text-slate-500 uppercase italic">Presents</span>
+        <div class="text-center max-w-full mx-auto space-y-8 mb-32 relative py-4 hero-glow rounded-full">
+            <div class="space-y-3 pt-4">
+                <span class="block text-base md:text-lg font-black tracking-[0.2em] text-purple-400 uppercase">Department of Mechanical Engineering</span>
+                <span class="block text-xs font-semibold tracking-widest text-slate-500 uppercase italic">Presents</span>
             </div>
             
-            <h1 class="text-7xl md:text-9xl font-black tracking-tighter text-white leading-none select-none glow-text">
+            <h1 class="text-7xl md:text-9xl font-black tracking-tighter text-white select-none glow-text leading-[1.15]">
                 SPECTRUM
             </h1>
 
@@ -211,7 +211,7 @@
                 </span>
             </div>
             
-            <p class="text-slate-400 text-sm md:text-base font-light max-w-3xl mx-auto leading-relaxed text-justify md:text-center px-4">
+            <p class="text-slate-400 text-sm md:text-base font-light max-w-5xl mx-auto leading-relaxed text-justify md:text-center px-4 md:px-8">
                 More than a magazine, SPECTRUM is a celebration of the vibrant spirit of the Department of Mechanical Engineering. It brings together the achievements, innovations, experiences, creativity, and aspirations of students, faculty, staff, and alumni, reflecting the many dimensions that shape our academic community. Through every article, project, memory, and accomplishment, SPECTRUM captures the journey of learning, discovery, and excellence that defines us, creating a lasting record of our collective growth and inspiring future generations to dream, create, and achieve.
             </p>
 
@@ -222,7 +222,7 @@
             </div>
         </div>
 
-        <section id="spirit" class="mb-32 scroll-mt-24">
+        <section id="spirit" class="max-w-6xl mx-auto mb-32 scroll-mt-24">
             <div class="text-center mb-12">
                 <h2 class="text-2xl font-bold tracking-wide text-white uppercase">The Spirit of Spectrum</h2>
                 <div class="h-1 w-12 bg-purple-500 mx-auto mt-3 rounded-full"></div>
@@ -243,7 +243,7 @@
             </div>
         </section>
 
-        <section id="administration" class="space-y-8 mb-32 scroll-mt-24">
+        <section id="administration" class="max-w-6xl mx-auto space-y-8 mb-32 scroll-mt-24">
             <div class="text-center mb-12">
                 <h2 class="text-2xl font-bold tracking-wide text-white uppercase">From the Desk of Mentors</h2>
                 <div class="h-1 w-12 bg-indigo-500 mx-auto mt-3 rounded-full"></div>
@@ -253,7 +253,7 @@
                 <div class="p-8 rounded-3xl glass-card border-purple-500/20 flex flex-col md:flex-row gap-6 items-center relative overflow-hidden">
                     <img src="image_004823.jpg" alt="Dr. Tridibesh Das" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20 filter contrast-105 shadow-xl">
                     <div class="space-y-3 flex-1 text-center md:text-left">
-                        <span class="text-[10px] font-mono tracking-widest text-purple-400 uppercase bg-purple-500/10 px-2.5 py-1 rounded-md">Current HOD Message</span>
+                        <span class="text-[10px] font-mono tracking-widest text-purple-400 uppercase bg-purple-500/10 px-2.5 py-1 rounded-md">HOD's Column</span>
                         <h3 class="text-2xl font-bold text-white tracking-tight">Dr. Tridibesh Das</h3>
                         <p class="text-slate-300 text-xs leading-relaxed font-light italic">
                             "Engineering is about cultivating an adaptive mindset to solve complex constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research with expressive creativity."
@@ -282,7 +282,7 @@
             </div>
         </section>
 
-        <section id="read-now" class="scroll-mt-24">
+        <section id="read-now" class="max-w-6xl mx-auto scroll-mt-24">
             <div class="text-center mb-10">
                 <h2 class="text-2xl md:text-3xl font-bold text-white tracking-wide">SPECTRUM DIGITAL EDITION</h2>
                 <p class="text-purple-400/80 text-xs font-mono mt-2 uppercase tracking-widest">Interactive Flipbook Experience</p>
@@ -324,7 +324,7 @@
 
         facultyBtn.addEventListener('click', () => {
             facultyModal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden'); // Lock background scroll
+            document.body.classList.add('overflow-hidden');
             setTimeout(() => {
                 facultyModal.classList.remove('opacity-0');
                 modalContainer.classList.remove('scale-95');
@@ -334,7 +334,6 @@
 
         facultyClose.addEventListener('click', closeFaculty);
         
-        // Universal close handling
         document.addEventListener('click', (e) => {
             if (!dropdownMenu.classList.contains('hidden')) hideMenu();
             if (e.target === facultyModal) closeFaculty();
