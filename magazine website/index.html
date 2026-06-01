@@ -3,68 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mechanical Engineering Magazine</title>
+    <title>SPECTRUM - Mechanical Engineering Magazine</title>
+    <!-- Tailwind CSS for high-fidelity styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom glowing background effect */
-        .glow-bg {
-            background: radial-gradient(circle at 50% -20%, rgba(14, 165, 233, 0.15) 0%, rgba(0,0,0,0) 50%);
+        /* Custom styling mapping the deep palette tones from image_0a482e.png */
+        .premium-bg {
+            background-color: #0b0d19;
+            background-image: radial-gradient(circle at 50% -20%, #3b336a 0%, #0b0d19 65%);
+        }
+        .glass-card {
+            background: rgba(30, 27, 57, 0.4);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            backdrop-filter: blur(12px);
+        }
+        .glow-text {
+            text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
         }
     </style>
 </head>
-<body class="bg-[#0b0c10] text-gray-100 font-sans antialiased glow-bg min-h-screen">
+<body class="premium-bg text-gray-100 font-sans antialiased min-h-screen selection:bg-purple-500/30">
 
-    <header class="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center border-b border-gray-800/60">
-        <div class="flex items-center space-x-3">
-            <div class="h-3 w-3 rounded-full bg-sky-500 animate-pulse"></div>
-            <span class="font-semibold tracking-wider text-sm uppercase text-gray-300">MECH DEPT MAGAZINE</span>
+    <!-- Navigation Header Bar -->
+    <header class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center border-b border-purple-950/40">
+        <div class="flex items-center space-x-4">
+            <!-- College Logo from KGEC LOGO w.png -->
+            <img src="KGEC_LOGO_w.png" alt="KGEC Logo" class="h-12 w-auto object-contain brightness-110">
+            <div class="h-8 w-[1px] bg-purple-900/60"></div>
+            <span class="font-black tracking-widest text-xl text-white glow-text">SPECTRUM</span>
         </div>
-        <a href="#read-now" class="text-xs font-medium tracking-widest uppercase bg-sky-500/10 text-sky-400 px-4 py-2 rounded-full border border-sky-500/30 hover:bg-sky-500 hover:text-white transition-all duration-300">
-            Launch Issue
+        <a href="#read-now" class="text-xs font-semibold tracking-widest uppercase bg-purple-500/10 text-purple-300 px-5 py-2.5 rounded-full border border-purple-500/30 hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-600 hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/10">
+            Read Magazine
         </a>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 pt-20 pb-16">
-        <div class="text-center max-w-3xl mx-auto space-y-6">
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-none">
-                Unveiling the Future of <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">Engineering.</span>
+    <!-- Main Landing Container -->
+    <main class="max-w-6xl mx-auto px-6 pt-16 pb-20">
+        
+        <!-- Hero Title Section -->
+        <div class="text-center max-w-3xl mx-auto space-y-6 mb-20">
+            <span class="text-xs font-bold tracking-widest text-purple-400 uppercase bg-purple-500/5 px-4 py-1.5 rounded-full border border-purple-500/10">Departmental Publication</span>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white leading-none">
+                The Core of <br class="hidden md:block">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-400 to-indigo-400">Mechanical Spirit.</span>
             </h1>
-            <p class="text-gray-400 text-lg md:text-xl font-light max-w-2xl mx-auto">
-                Explore student research, automotive innovations, and cutting-edge design paradigms straight out of our mechanical labs.
+            <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+                Welcome to the digital portal of <span class="text-white font-medium">SPECTRUM</span>. A canvas showcasing the technical brilliance, creative paradigms, and collective voice of our engineering community.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
-            <div class="p-8 rounded-2xl bg-[#1f2833]/30 border border-gray-800/80 hover:border-sky-500/30 transition-all duration-300 group">
-                <span class="text-xs font-mono text-sky-400 uppercase tracking-widest">01 / Innovation</span>
-                <h3 class="text-xl font-bold text-white mt-4 mb-2 group-hover:text-sky-400 transition-colors">Automotive & Go-Karting</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">A deep dive into tuning custom-built powertrains, chassis structural analysis, and track aerodynamics testing.</p>
-            </div>
-            <div class="p-8 rounded-2xl bg-[#1f2833]/30 border border-gray-800/80 hover:border-sky-500/30 transition-all duration-300 group">
-                <span class="text-xs font-mono text-sky-400 uppercase tracking-widest">02 / Manufacturing</span>
-                <h3 class="text-xl font-bold text-white mt-4 mb-2 group-hover:text-sky-400 transition-colors">Smart Manufacturing</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Exploring data-driven quality control frameworks, precision tooling, and modern CNC automation pipelines.</p>
-            </div>
-            <div class="p-8 rounded-2xl bg-[#1f2833]/30 border border-gray-800/80 hover:border-sky-500/30 transition-all duration-300 group">
-                <span class="text-xs font-mono text-sky-400 uppercase tracking-widest">03 / Bio-Mech</span>
-                <h3 class="text-xl font-bold text-white mt-4 mb-2 group-hover:text-sky-400 transition-colors">Experimental Research</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Analyzing experimental testing matrices to reduce thermal loading and structural heat damage in surgical procedures.</p>
-            </div>
-        </div>
-
-        <section id="read-now" class="mt-24 scroll-mt-10">
+        <!-- The Spirit of SPECTRUM Section (Replacing Old Tech Tabs) -->
+        <section class="mb-24">
             <div class="text-center mb-10">
-                <h2 class="text-2xl md:text-3xl font-bold text-white">Interactive Publication</h2>
-                <p class="text-gray-400 text-sm mt-2">Flip through the complete, high-definition digital edition below.</p>
+                <h2 class="text-2xl font-bold tracking-wide text-white uppercase">The Spirit of Spectrum</h2>
+                <div class="h-1 w-12 bg-purple-500 mx-auto mt-3 rounded-full"></div>
             </div>
             
-            <div class="w-full aspect-[4/3] md:aspect-[16/10] max-w-5xl mx-auto rounded-2xl overflow-hidden border border-gray-800 bg-[#0f1115] shadow-2xl shadow-sky-500/10 p-1">
-                <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="w-full h-full rounded-xl border-none" src="https://heyzine.com/flip-book/346fa9d6e8.html"></iframe>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-8 rounded-2xl glass-card hover:border-purple-500/40 transition-all duration-300 group">
+                    <div class="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 text-purple-400 font-mono text-sm group-hover:bg-purple-500 group-hover:text-white transition-all">01</div>
+                    <h3 class="text-xl font-bold text-white mt-5 mb-2">Technical Evolution</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">SPECTRUM serves as a timeline capturing our shift toward modern industrial frontiers—reflecting student contributions in computational design, automation, thermal labs, and advanced automotive builds.</p>
+                </div>
+                
+                <div class="p-8 rounded-2xl glass-card hover:border-purple-500/40 transition-all duration-300 group">
+                    <div class="h-10 w-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 text-indigo-400 font-mono text-sm group-hover:bg-indigo-500 group-hover:text-white transition-all">02</div>
+                    <h3 class="text-xl font-bold text-white mt-5 mb-2">Creative Spectrum</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Beyond complex mathematical equations and machine blueprints lies a vibrant stream of literature, fine art, photography, and personal reflections that bind the batch together as a family.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- From the HOD's Desk Section -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-12 px-8 rounded-3xl glass-card border-purple-500/20 mb-24 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/5 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <!-- HOD Portrait Frame (image_0a446e.png) -->
+            <div class="md:col-span-4 flex justify-center">
+                <div class="relative group">
+                    <div class="absolute -inset-1.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
+                    <img src="image_0a446e.png" alt="Head of Department" class="relative rounded-2xl w-56 h-56 object-cover border border-purple-500/20 filter contrast-105 grayscale-[20%] hover:grayscale-0 transition-all duration-300">
+                </div>
+            </div>
+            
+            <!-- HOD Message -->
+            <div class="md:col-span-8 space-y-4">
+                <span class="text-xs font-mono tracking-widest text-purple-400 uppercase">Message Corner</span>
+                <h2 class="text-3xl font-extrabold text-white tracking-tight">From the HOD's Desk</h2>
+                <p class="text-slate-300 text-sm leading-relaxed font-light italic">
+                    "Engineering is not merely about understanding machines; it is about cultivating an adaptive mindset to solve complex, real-world constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research, hands-on fabrication, and expressive creativity. I am proud to present this issue as a true testament to our department's ongoing legacy of excellence."
+                </p>
+                <div class="pt-2">
+                    <p class="text-sm font-bold text-white tracking-wide">Head of the Department</p>
+                    <p class="text-xs text-slate-400">Mechanical Engineering Department</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Flipbook Section Container -->
+        <section id="read-now" class="scroll-mt-10">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-bold text-white tracking-wide">SPECTRUM DIGITAL EDITION</h2>
+                <p class="text-purple-400/80 text-xs font-mono mt-2 uppercase tracking-widest">Interactive Flipbook Experience</p>
+            </div>
+            
+            <!-- Clean Layout Wrapper for your Active Heyzine Link -->
+            <div class="w-full aspect-[4/3] md:aspect-[16/10] max-w-5xl mx-auto rounded-2xl overflow-hidden border border-purple-900/30 bg-[#080911] shadow-2xl shadow-purple-950/50 p-1">
+                <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="w-full h-full rounded-xl border-none bg-transparent" src="https://heyzine.com/flip-book/346fa9d6e8.html"></iframe>
             </div>
         </section>
     </main>
 
-    <footer class="max-w-6xl mx-auto px-6 py-12 text-center text-xs text-gray-500 tracking-wider uppercase border-t border-gray-800/60">
+    <!-- Footer Area -->
+    <footer class="max-w-6xl mx-auto px-6 py-12 text-center text-xs text-slate-500 tracking-widest uppercase border-t border-purple-950/30">
         &copy; 2026 Department of Mechanical Engineering. All Rights Reserved.
     </footer>
 
