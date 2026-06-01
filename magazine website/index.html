@@ -14,8 +14,63 @@
         .glow-text { text-shadow: 0 0 35px rgba(167, 139, 250, 0.5); }
         .hero-glow { background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%); }
         
-        /* Preloader */
-        .loader-hide { opacity: 0; pointer-events: none; transform: translateY(-100%); transition: all 0.8s cubic-bezier(0.85, 0, 0.15, 1); }
+        /* --- HIGH-FIDELITY ZENITH-STYLE PRELOADER ANIMATIONS --- */
+        #site-preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background-color: #04050a;
+            display: flex;
+            flex-col;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            transition: transform 1.1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1.1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        /* Clean entry: text flies smoothly up from bottom while fading in */
+        .preload-text-wrapper {
+            animation: textFlyUp 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            opacity: 0;
+        }
+
+        /* Smooth dissolution/fade-out trigger style applied via JS */
+        .preload-text-dissolve {
+            animation: textDissolve 0.8s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+        }
+
+        /* Entire screen container sliding out upwards */
+        .loader-panel-exit {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes textFlyUp {
+            0% {
+                transform: translateY(40px);
+                opacity: 0;
+                filter: blur(8px);
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes textDissolve {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+                filter: blur(0);
+            }
+            100% {
+                transform: translateY(-20px);
+                opacity: 0;
+                filter: blur(12px);
+            }
+        }
         
         /* --- NATIVE FLIPBOOK CENTER LOGIC --- */
         #magazine-viewport {
@@ -25,15 +80,11 @@
             align-items: center;
             perspective: 2000px;
         }
-
         #native-magazine {
-            transition: transform 0.5s ease-in-out; /* Smooth slide when centering covers */
+            transition: transform 0.5s ease-in-out;
             cursor: pointer;
         }
-
-        /* Logic to shift the cover to center */
         .showing-cover { transform: translateX(25%); } 
-        /* For mobile, shift needs to be smaller */
         @media (max-width: 768px) { .showing-cover { transform: translateX(25%); } }
 
         #native-magazine .page {
@@ -44,9 +95,8 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
-        /* Responsive SPECTRUM Text Fix */
         .hero-title {
-            font-size: clamp(2.5rem, 15vw, 9rem); /* Prevents horizontal overflow automatically */
+            font-size: clamp(2.5rem, 15vw, 9rem);
             line-height: 1;
             letter-spacing: 0.1em;
         }
@@ -54,16 +104,14 @@
 </head>
 <body class="premium-bg text-gray-100 font-sans antialiased min-h-screen selection:bg-purple-500/30 pt-24 relative overflow-x-hidden w-full">
 
-    <div id="site-preloader" class="fixed inset-0 z-[100] bg-[#04050a] flex flex-col items-center justify-center p-6">
-        <div class="max-w-xl w-full text-center space-y-6 relative">
-            <div class="space-y-2">
-                <h2 class="text-xs md:text-sm font-black tracking-[0.25em] text-purple-400 uppercase">Department of Mechanical Engineering</h2>
-                <p class="text-[10px] tracking-[0.15em] text-slate-500 uppercase font-medium">Kalyani Government Engineering College</p>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-black text-white tracking-[0.3em] uppercase glow-text">SPECTRUM</h1>
-            <div class="w-48 h-[2px] bg-purple-950/40 rounded-full mx-auto overflow-hidden">
-                <div class="h-full bg-purple-500 w-full animate-[shimmer_1.5s_infinite] origin-left" style="animation: loadProgress 2s forwards;"></div>
-            </div>
+    <div id="site-preloader">
+        <div class="preload-text-wrapper max-w-3xl w-full text-center space-y-3 relative z-10">
+            <h2 class="text-2xl md:text-4xl font-black tracking-[0.18em] text-white uppercase sm:leading-snug px-4">
+                Department of Mechanical Engineering
+            </h2>
+            <p class="text-xs md:text-sm tracking-[0.25em] text-purple-400 uppercase font-bold pt-1">
+                Kalyani Government Engineering College
+            </p>
         </div>
     </div>
 
@@ -163,15 +211,22 @@
 
     <script>
         $(window).on('load', function() {
-            // Hide Preloader
-            setTimeout(() => { $('#site-preloader').addClass('loader-hide'); }, 1500);
+            // --- HIGH-FIDELITY PRELOADER SEQUENCER CONTROL ---
+            setTimeout(() => {
+                // Step 1: Text flies up and dissolves smoothly (blurred fade out)
+                $('.preload-text-wrapper').addClass('preload-text-dissolve');
+                
+                // Step 2: Main screen panel cleanly shifts upwards out of view right after text fades
+                setTimeout(() => {
+                    $('#site-preloader').addClass('loader-panel-exit');
+                }, 600);
+            }, 2200); // Gives enough visual duration for your core text presentation
 
             // FLIPBOOK PC/MOBILE FIX
             const container = $('#magazine-viewport');
             let h = container.height() - 40;
-            let w = h * 1.4; // Magazine aspect ratio
+            let w = h * 1.4;
 
-            // Mobile Sizing check
             if (w > container.width() * 0.9) {
                 w = container.width() * 0.9;
                 h = w / 1.4;
@@ -182,30 +237,22 @@
             magazine.turn({
                 width: w,
                 height: h,
-                autoCenter: false, // We handle centering manually for better control
+                autoCenter: false,
                 display: 'double',
                 acceleration: true,
                 gradients: true,
                 elevation: 50,
                 when: {
                     turning: function(e, page) {
-                        // Center Logic: If page 1, shift left to appear centered
                         if (page == 1) {
                             magazine.addClass('showing-cover');
                         } else {
                             magazine.removeClass('showing-cover');
                         }
-                    },
-                    start: function(e, pageObj) {
-                        // Handle back cover centering if needed
-                        if (pageObj.next == magazine.turn('pages')) {
-                             // logic for last page center if you wish
-                        }
                     }
                 }
             });
             
-            // Initial center trigger
             magazine.addClass('showing-cover');
         });
 
