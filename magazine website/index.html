@@ -8,204 +8,129 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
     <style>
-        .premium-bg {
-            background-color: #05070f;
+        .premium-bg { background-color: #05070f; }
+        .glass-card { background: rgba(20, 18, 42, 0.45); border: 1px solid rgba(139, 92, 246, 0.15); backdrop-filter: blur(14px); }
+        .glass-nav { background: rgba(5, 7, 15, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(139, 92, 246, 0.1); }
+        .glow-text { text-shadow: 0 0 35px rgba(167, 139, 250, 0.5); }
+        .hero-glow { background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%); }
+        
+        /* Preloader */
+        .loader-hide { opacity: 0; pointer-events: none; transform: translateY(-100%); transition: all 0.8s cubic-bezier(0.85, 0, 0.15, 1); }
+        
+        /* --- NATIVE FLIPBOOK CENTER LOGIC --- */
+        #magazine-viewport {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 2000px;
         }
-        .glass-card {
-            background: rgba(20, 18, 42, 0.45);
-            border: 1px solid rgba(139, 92, 246, 0.15);
-            backdrop-filter: blur(14px);
-        }
-        .glass-nav {
-            background: rgba(5, 7, 15, 0.75);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
-        }
-        .glow-text {
-            text-shadow: 0 0 35px rgba(167, 139, 250, 0.5);
-        }
-        .hero-glow {
-            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%);
-        }
-        /* Native Turn.js Sheet Configurations */
+
         #native-magazine {
-            margin: 0 auto;
+            transition: transform 0.5s ease-in-out; /* Smooth slide when centering covers */
+            cursor: pointer;
         }
+
+        /* Logic to shift the cover to center */
+        .showing-cover { transform: translateX(25%); } 
+        /* For mobile, shift needs to be smaller */
+        @media (max-width: 768px) { .showing-cover { transform: translateX(25%); } }
+
         #native-magazine .page {
             background-color: #0f111a;
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        /* Responsive SPECTRUM Text Fix */
+        .hero-title {
+            font-size: clamp(2.5rem, 15vw, 9rem); /* Prevents horizontal overflow automatically */
+            line-height: 1;
+            letter-spacing: 0.1em;
         }
     </style>
 </head>
 <body class="premium-bg text-gray-100 font-sans antialiased min-h-screen selection:bg-purple-500/30 pt-24 relative overflow-x-hidden w-full">
 
-    <canvas id="ambient-particles" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
-
-    <header class="fixed top-0 left-0 right-0 z-40 glass-nav transition-all duration-300">
-        <div class="max-w-6xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <img src="KGEC_LOGO_w.png" alt="KGEC Logo" class="h-10 w-auto object-contain brightness-110">
-                <div class="h-6 w-[1px] bg-purple-900/60"></div>
-                <span class="font-black tracking-widest text-lg text-white glow-text select-none">SPECTRUM</span>
+    <div id="site-preloader" class="fixed inset-0 z-[100] bg-[#04050a] flex flex-col items-center justify-center p-6">
+        <div class="max-w-xl w-full text-center space-y-6 relative">
+            <div class="space-y-2">
+                <h2 class="text-xs md:text-sm font-black tracking-[0.25em] text-purple-400 uppercase">Department of Mechanical Engineering</h2>
+                <p class="text-[10px] tracking-[0.15em] text-slate-500 uppercase font-medium">Kalyani Government Engineering College</p>
             </div>
-            
-            <div class="flex items-center space-x-3">
-                <button id="faculty-modal-open" class="text-xs font-semibold tracking-widest uppercase text-slate-300 hover:text-white px-4 py-2.5 rounded-full hover:bg-purple-500/10 transition-all duration-200">
-                    Faculty
-                </button>
-
-                <div class="relative inline-block text-left">
-                    <button id="menu-button" class="flex items-center text-gray-400 hover:text-white p-2 rounded-full hover:bg-purple-500/10 transition-all focus:outline-none" aria-label="Options">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                        </svg>
-                    </button>
-
-                    <div id="dropdown-menu" class="hidden absolute right-0 mt-3 w-48 rounded-xl glass-card shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden origin-top-right transition-all duration-200 transform scale-95 opacity-0 z-50">
-                        <div class="py-1 bg-[#090a14]/95" role="menu">
-                            <a href="#" class="block px-4 py-3 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Home</a>
-                            <a href="#spirit" class="block px-4 py-3 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">The Spirit</a>
-                            <a href="#administration" class="block px-4 py-3 text-sm text-gray-300 hover:bg-purple-600/20 hover:text-white transition-colors">Desk Messages</a>
-                            <div class="border-t border-purple-950/40 my-1"></div>
-                            <a href="#read-now" class="block px-4 py-3 text-sm text-purple-400 font-medium hover:bg-purple-600/20 hover:text-purple-300 transition-colors">Launch Flipbook</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div id="faculty-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-md flex items-center justify-center p-4 md:p-6 transition-all duration-300 opacity-0">
-        <div class="relative w-full max-w-5xl rounded-3xl glass-card max-h-[85vh] overflow-y-auto shadow-2xl shadow-purple-950/40 border border-purple-500/20 transform scale-95 transition-all duration-300">
-            <div class="sticky top-0 z-10 bg-[#0c0e1a]/90 backdrop-blur-md px-8 py-5 border-b border-purple-950/60 flex justify-between items-center">
-                <div>
-                    <h3 class="text-xl font-bold text-white tracking-wide">Faculty Directory</h3>
-                    <p class="text-xs text-purple-400/80 font-mono tracking-wider uppercase mt-0.5">Mechanical Engineering Department</p>
-                </div>
-                <button id="faculty-modal-close" class="p-2 rounded-full text-gray-400 hover:text-white hover:bg-purple-500/10 transition-colors focus:outline-none">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all">
-                    <div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-400 font-mono text-[10px] group-hover:border-purple-500/30 transition-all">
-                        <img src="image_0a446e.png" alt="Dr. Santanu Das" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white truncate">Dr. Santanu Das</h4>
-                        <p class="text-[11px] text-purple-400 font-medium">Professor</p>
-                        <p class="text-[10px] text-slate-500 font-mono mt-1 truncate">Machining & Tribology</p>
-                    </div>
-                </div>
-
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all">
-                    <div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-400 font-mono text-[10px] group-hover:border-purple-500/30 transition-all">
-                        <img src="image_004823.jpg" alt="Dr. Tridibesh Das" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white truncate">Dr. Tridibesh Das</h4>
-                        <p class="text-[11px] text-purple-400 font-medium">Professor & HOD</p>
-                        <p class="text-[10px] text-slate-500 font-mono mt-1 truncate">Thermal Engineering</p>
-                    </div>
-                </div>
-
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all"><div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-500 font-mono text-[10px]">[ IMAGE_03 ]</div><div><h4 class="text-sm font-bold text-white truncate">Faculty Name 03</h4><p class="text-[11px] text-purple-400 font-medium">Associate Professor</p></div></div>
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all"><div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-500 font-mono text-[10px]">[ IMAGE_04 ]</div><div><h4 class="text-sm font-bold text-white truncate">Faculty Name 04</h4><p class="text-[11px] text-purple-400 font-medium">Assistant Professor</p></div></div>
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all"><div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-500 font-mono text-[10px]">[ IMAGE_05 ]</div><div><h4 class="text-sm font-bold text-white truncate">Faculty Name 05</h4><p class="text-[11px] text-purple-400 font-medium">Assistant Professor</p></div></div>
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all"><div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-500 font-mono text-[10px]">[ IMAGE_06 ]</div><div><h4 class="text-sm font-bold text-white truncate">Faculty Name 06</h4><p class="text-[11px] text-purple-400 font-medium">Assistant Professor</p></div></div>
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all"><div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-500 font-mono text-[10px]">[ IMAGE_07 ]</div><div><h4 class="text-sm font-bold text-white truncate">Faculty Name 07</h4><p class="text-[11px] text-purple-400 font-medium">Assistant Professor</p></div></div>
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all"><div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-500 font-mono text-[10px]">[ IMAGE_08 ]</div><div><h4 class="text-sm font-bold text-white truncate">Faculty Name 08</h4><p class="text-[11px] text-purple-400 font-medium">Assistant Professor</p></div></div>
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all"><div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-500 font-mono text-[10px]">[ IMAGE_09 ]</div><div><h4 class="text-sm font-bold text-white truncate">Faculty Name 09</h4><p class="text-[11px] text-purple-400 font-medium">Assistant Professor</p></div></div>
-                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center space-y-3 group hover:border-purple-500/30 transition-all"><div class="w-24 h-24 rounded-full bg-purple-950/40 border border-purple-900/30 mx-auto overflow-hidden flex items-center justify-center text-slate-500 font-mono text-[10px]">[ IMAGE_10 ]</div><div><h4 class="text-sm font-bold text-white truncate">Faculty Name 10</h4><p class="text-[11px] text-purple-400 font-medium">Assistant Professor</p></div></div>
+            <h1 class="text-4xl md:text-5xl font-black text-white tracking-[0.3em] uppercase glow-text">SPECTRUM</h1>
+            <div class="w-48 h-[2px] bg-purple-950/40 rounded-full mx-auto overflow-hidden">
+                <div class="h-full bg-purple-500 w-full animate-[shimmer_1.5s_infinite] origin-left" style="animation: loadProgress 2s forwards;"></div>
             </div>
         </div>
     </div>
 
-    <main class="w-full max-w-full px-4 md:px-6 pt-6 pb-20 relative z-10 box-border overflow-x-hidden">
-        
-        <div class="text-center max-w-full mx-auto space-y-6 mb-32 relative py-4 hero-glow rounded-full box-border">
-            <div class="space-y-2 pt-4 px-2">
-                <span class="block text-sm md:text-lg font-black tracking-[0.2em] text-purple-400 uppercase break-words">Department of Mechanical Engineering</span>
-                <span class="block text-xs font-semibold tracking-widest text-slate-500 uppercase italic">Presents</span>
-                <span class="block text-sm md:text-base font-bold tracking-[0.15em] uppercase text-purple-300/90 glow-text mt-1">Official Magazine '26</span>
-            </div>
-            
-            <h1 class="text-5xl sm:text-7xl md:text-9xl font-black text-white select-none glow-text leading-none tracking-[0.1em] md:tracking-[0.2em] w-full block break-words">
-                SPECTRUM
-            </h1>
+    <canvas id="ambient-particles" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
 
-            <div class="py-2 px-2">
-                <span class="text-base sm:text-xl md:text-2xl font-black tracking-widest md:tracking-[0.25em] uppercase text-[#e9d8a6] block break-words">
-                    NO TECH WITHOUT MECH
-                </span>
+    <header class="fixed top-0 left-0 right-0 z-40 glass-nav">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="KGEC_LOGO_w.png" alt="KGEC Logo" class="h-10 w-auto">
+                <div class="h-6 w-[1px] bg-purple-900/60"></div>
+                <span class="font-black tracking-widest text-lg text-white glow-text">SPECTRUM</span>
             </div>
-            
-            <p class="text-slate-400 text-xs md:text-base font-light max-w-6xl mx-auto leading-relaxed text-center px-2 md:px-12">
-                More than a magazine, SPECTRUM is a celebration of the vibrant spirit of the Department of Mechanical Engineering. It brings together the achievements, innovations, experiences, creativity, and aspirations of students, faculty, staff, and alumni, reflecting the many dimensions that shape our academic community. Through every article, project, memory, and accomplishment, the magazine of 2026 captures the journey of learning, discovery, and excellence that defines us, creating a lasting record of our collective growth and inspiring future generations to dream, create, and achieve.
-            </p>
-
-            <div class="pt-4">
-                <a href="#read-now" class="inline-block text-xs md:text-sm font-bold tracking-widest uppercase bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 md:px-10 py-3 md:py-4 rounded-full hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 shadow-xl transform hover:-translate-y-0.5">
-                    Read Full Magazine
-                </a>
+            <div class="flex items-center space-x-3">
+                <button id="faculty-modal-open" class="text-xs font-semibold tracking-widest uppercase text-slate-300 hover:text-white px-4 py-2">Faculty</button>
+                <button id="menu-button" class="p-2 text-gray-400 hover:text-white"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg></button>
             </div>
         </div>
+    </header>
 
-        <section id="spirit" class="max-w-6xl mx-auto mb-32 scroll-mt-24 px-2">
-            <div class="text-center mb-12">
-                <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white uppercase">The Spirit of Spectrum</h2>
-                <div class="h-1 w-12 bg-purple-500 mx-auto mt-3 rounded-full"></div>
+    <div id="faculty-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="relative w-full max-w-5xl rounded-3xl glass-card max-h-[85vh] overflow-y-auto border border-purple-500/20 shadow-2xl">
+            <div class="sticky top-0 z-10 bg-[#0c0e1a]/90 backdrop-blur px-8 py-5 border-b border-purple-950/60 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-white uppercase tracking-widest">Faculty Directory</h3>
+                <button id="faculty-modal-close" class="text-gray-400 hover:text-white"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="p-6 md:p-8 rounded-2xl glass-card transition-all duration-300">
-                    <h3 class="text-lg md:text-xl font-bold text-white mb-2">Technical Evolution</h3>
-                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed">SPECTRUM serves as a timeline capturing our shift toward modern industrial frontiers—reflecting student contributions in computational design, automation, thermal labs, and advanced automotive builds.</p>
+            <div class="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center group">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3"><img src="image_0a446e.png" class="w-full h-full object-cover"></div>
+                    <h4 class="text-sm font-bold text-white">Dr. Santanu Das</h4>
+                    <p class="text-[11px] text-purple-400">Professor & Registrar</p>
                 </div>
-                <div class="p-6 md:p-8 rounded-2xl glass-card transition-all duration-300">
-                    <h3 class="text-lg md:text-xl font-bold text-white mb-2">Creative Spectrum</h3>
-                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed">Beyond complex mathematical equations and machine blueprints lies a vibrant stream of literature, fine art, photography, and personal reflections that bind the batch together as a family.</p>
+                <div class="bg-[#0e101f] rounded-xl border border-purple-950/40 p-4 text-center group">
+                    <div class="w-24 h-24 rounded-full bg-purple-950 mx-auto overflow-hidden mb-3"><img src="image_004823.jpg" class="w-full h-full object-cover"></div>
+                    <h4 class="text-sm font-bold text-white">Dr. Tridibesh Das</h4>
+                    <p class="text-[11px] text-purple-400">Professor & HOD</p>
                 </div>
+                <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px]">Upcoming Profile</div>
+                <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px]">Upcoming Profile</div>
+                <div class="bg-[#0e101f]/40 rounded-xl border border-purple-950/20 p-4 text-center opacity-50 italic text-[10px]">Upcoming Profile</div>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <section id="administration" class="max-w-6xl mx-auto space-y-8 mb-32 scroll-mt-24 px-2">
-            <div class="text-center mb-12">
-                <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white uppercase">From the Desk of Mentors</h2>
-                <div class="h-1 w-12 bg-indigo-500 mx-auto mt-3 rounded-full"></div>
+    <main class="w-full max-w-full px-4 md:px-6 relative z-10 box-border overflow-x-hidden">
+        
+        <div class="text-center max-w-full mx-auto mb-24 relative py-4 hero-glow">
+            <div class="space-y-2 mb-6">
+                <span class="block text-base md:text-lg font-black tracking-[0.2em] text-purple-400 uppercase">Department of Mechanical Engineering</span>
+                <span class="block text-xs font-semibold tracking-widest text-slate-500 uppercase italic">Presents</span>
+                <span class="block text-sm md:text-base font-bold tracking-[0.15em] uppercase text-purple-300 glow-text">Official Magazine '26</span>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="p-6 md:p-8 rounded-3xl glass-card flex flex-col sm:flex-row gap-6 items-center">
-                    <img src="image_004823.jpg" alt="Dr. Tridibesh Das" class="rounded-2xl w-32 h-32 md:w-40 md:h-40 object-cover border border-purple-500/20">
-                    <div class="space-y-2 text-center sm:text-left">
-                        <span class="text-[10px] font-mono tracking-widest text-purple-400 uppercase bg-purple-500/10 px-2 py-0.5 rounded">HOD's Column</span>
-                        <h3 class="text-xl font-bold text-white">Dr. Tridibesh Das</h3>
-                        <p class="text-slate-300 text-xs italic font-light">"Engineering is about cultivating an adaptive mindset to solve complex constraints. This publication highlights the commendable tenacity of our students, balancing dense experimental research with expressive creativity."</p>
-                    </div>
-                </div>
-                <div class="p-6 md:p-8 rounded-3xl glass-card flex flex-col sm:flex-row gap-6 items-center">
-                    <img src="image_0a446e.png" alt="Dr. Santanu Das" class="rounded-2xl w-32 h-32 md:w-40 md:h-40 object-cover border border-purple-500/20">
-                    <div class="space-y-2 text-center sm:text-left">
-                        <span class="text-[10px] font-mono tracking-widest text-indigo-400 uppercase bg-indigo-500/10 px-2 py-0.5 rounded">Registrar's Column</span>
-                        <h3 class="text-xl font-bold text-white">Dr. Santanu Das</h3>
-                        <p class="text-slate-300 text-xs italic font-light">"This ongoing publication legacy remains an absolute testament to our department's enduring excellence. It proudly reflects both standard academic milestones and the deep practical evolution of our engineering students."</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <h1 class="hero-title font-black text-white glow-text uppercase">SPECTRUM</h1>
+            <div class="py-4"><span class="text-xl md:text-2xl font-black tracking-[0.25em] uppercase text-[#e9d8a6] drop-shadow-lg">NO TECH WITHOUT MECH</span></div>
+            <p class="text-slate-400 text-sm md:text-base font-light max-w-6xl mx-auto leading-relaxed px-4 md:px-12 text-center">
+                More than a magazine, SPECTRUM is a celebration of the vibrant spirit of the Department of Mechanical Engineering. Through every article, project, memory, and accomplishment, the magazine of 2026 captures the journey of learning and discovery that defines us.
+            </p>
+            <div class="mt-8"><a href="#read-now" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform inline-block">Read Full Magazine</a></div>
+        </div>
 
-        <section id="read-now" class="max-w-6xl mx-auto scroll-mt-24 px-2">
+        <section id="read-now" class="max-w-7xl mx-auto mb-32 scroll-mt-24 px-2">
             <div class="text-center mb-10">
-                <h2 class="text-2xl font-bold text-white tracking-wide">SPECTRUM DIGITAL EDITION</h2>
-                <p class="text-purple-400/80 text-xs font-mono mt-1 uppercase tracking-widest">Natively Rendered Interactive Interface</p>
+                <h2 class="text-2xl font-bold text-white tracking-widest uppercase">Spectrum Digital Edition</h2>
+                <p class="text-purple-400/80 text-xs font-mono mt-1 uppercase tracking-widest">Natively Rendered • Zero Ads • No Watermark</p>
             </div>
             
-            <div class="w-full max-w-5xl mx-auto h-[360px] md:h-[640px] rounded-2xl border border-purple-900/30 bg-[#020306] shadow-2xl shadow-purple-950/60 p-2 md:p-6 flex items-center justify-center overflow-hidden">
-                <div id="native-magazine" class="relative">
+            <div id="magazine-viewport" class="h-[400px] md:h-[700px] overflow-hidden rounded-2xl border border-purple-900/30 bg-[#020306] shadow-2xl relative">
+                <div id="native-magazine">
                     <div class="page" style="background-image:url('page1.jpg');"></div>
                     <div class="page" style="background-image:url('page2.jpg');"></div>
                     <div class="page" style="background-image:url('page3.jpg');"></div>
@@ -215,148 +140,93 @@
                 </div>
             </div>
         </section>
+
+        <section id="administration" class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 mb-32">
+            <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center">
+                <img src="image_004823.jpg" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20">
+                <div class="text-center md:text-left">
+                    <span class="text-[10px] text-purple-400 font-mono uppercase">HOD's Column</span>
+                    <h3 class="text-xl font-bold text-white">Dr. Tridibesh Das</h3>
+                    <p class="text-slate-300 text-xs italic mt-2">"Engineering is about cultivating an adaptive mindset. This publication highlights the tenacity of our students."</p>
+                </div>
+            </div>
+            <div class="p-8 rounded-3xl glass-card flex flex-col md:flex-row gap-6 items-center">
+                <img src="image_0a446e.png" class="rounded-2xl w-40 h-40 object-cover border border-purple-500/20">
+                <div class="text-center md:text-left">
+                    <span class="text-[10px] text-indigo-400 font-mono uppercase">Registrar's Column</span>
+                    <h3 class="text-xl font-bold text-white">Dr. Santanu Das</h3>
+                    <p class="text-slate-300 text-xs italic mt-2">"This publication legacy remains a testament to our excellence and the deep practical evolution of our students."</p>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="max-w-6xl mx-auto px-6 py-12 text-center text-xs text-slate-500 tracking-widest uppercase border-t border-purple-950/30 relative z-10">
-        &copy; 2026 Department of Mechanical Engineering, KGEC. All Rights Reserved.
-    </footer>
-
     <script>
-        // --- Improved Auto-Sizing Native Flipbook Controller (PC & Mobile Fix) ---
         $(window).on('load', function() {
-            const container = $('#native-magazine').parent();
-            
-            // Calculate perfect bounding widths mapping single/double views
-            let bookHeight = container.height() - 32; 
-            let bookWidth = bookHeight * 1.4; // 1.4 ratio matches side-by-side standard formats
-            
-            if (bookWidth > container.width()) {
-                bookWidth = container.width() - 16;
-                bookHeight = bookWidth / 1.4;
+            // Hide Preloader
+            setTimeout(() => { $('#site-preloader').addClass('loader-hide'); }, 1500);
+
+            // FLIPBOOK PC/MOBILE FIX
+            const container = $('#magazine-viewport');
+            let h = container.height() - 40;
+            let w = h * 1.4; // Magazine aspect ratio
+
+            // Mobile Sizing check
+            if (w > container.width() * 0.9) {
+                w = container.width() * 0.9;
+                h = w / 1.4;
             }
 
-            $('#native-magazine').turn({
-                width: bookWidth,
-                height: bookHeight,
+            const magazine = $('#native-magazine');
+
+            magazine.turn({
+                width: w,
+                height: h,
+                autoCenter: false, // We handle centering manually for better control
+                display: 'double',
                 acceleration: true,
-                shadows: true,
                 gradients: true,
-                autoCenter: true, // Forces cover sheets into absolute center alignment
-                display: 'double'
+                elevation: 50,
+                when: {
+                    turning: function(e, page) {
+                        // Center Logic: If page 1, shift left to appear centered
+                        if (page == 1) {
+                            magazine.addClass('showing-cover');
+                        } else {
+                            magazine.removeClass('showing-cover');
+                        }
+                    },
+                    start: function(e, pageObj) {
+                        // Handle back cover centering if needed
+                        if (pageObj.next == magazine.turn('pages')) {
+                             // logic for last page center if you wish
+                        }
+                    }
+                }
             });
+            
+            // Initial center trigger
+            magazine.addClass('showing-cover');
         });
 
-        // --- 3-Dot Menu Interactivity ---
-        const menuButton = document.getElementById('menu-button');
-        const dropdownMenu = document.getElementById('dropdown-menu');
+        // Modal Controllers
+        const facultyBtn = $('#faculty-modal-open'), modal = $('#faculty-modal'), close = $('#faculty-modal-close');
+        facultyBtn.on('click', () => { modal.removeClass('hidden'); setTimeout(()=>modal.css('opacity', 1),10); });
+        close.on('click', () => { modal.css('opacity', 0); setTimeout(()=>modal.addClass('hidden'),300); });
 
-        menuButton.addEventListener('click', (event) => {
-            event.stopPropagation();
-            if (dropdownMenu.classList.contains('hidden')) {
-                dropdownMenu.classList.remove('hidden');
-                setTimeout(() => {
-                    dropdownMenu.classList.remove('scale-95', 'opacity-0');
-                    dropdownMenu.classList.add('scale-100', 'opacity-100');
-                }, 10);
-            } else {
-                hideMenu();
-            }
-        });
-
-        // --- Faculty Modal Window Controller ---
-        const facultyBtn = document.getElementById('faculty-modal-open');
-        const facultyModal = document.getElementById('faculty-modal');
-        const facultyClose = document.getElementById('faculty-modal-close');
-        const modalContainer = facultyModal.querySelector('.glass-card');
-
-        facultyBtn.addEventListener('click', () => {
-            facultyModal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-            setTimeout(() => {
-                facultyModal.classList.remove('opacity-0');
-                modalContainer.classList.remove('scale-95');
-                modalContainer.classList.add('scale-100');
-            }, 10);
-        });
-
-        facultyClose.addEventListener('click', closeFaculty);
-        
-        document.addEventListener('click', (e) => {
-            if (!dropdownMenu.classList.contains('hidden')) hideMenu();
-            if (e.target === facultyModal) closeFaculty();
-        });
-
-        function hideMenu() {
-            dropdownMenu.classList.remove('scale-100', 'opacity-100');
-            dropdownMenu.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => { dropdownMenu.classList.add('hidden'); }, 150);
+        // Particles
+        const canvas = document.getElementById('ambient-particles'), ctx = canvas.getContext('2d');
+        let parts = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+        class P {
+            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.v = (Math.random()-0.5)*0.3; }
+            up() { this.x+=this.v; this.y+=this.v; if(this.x>canvas.width)this.x=0; if(this.y>canvas.height)this.y=0; }
+            dr() { ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fillStyle="#8b5cf6"; ctx.fill(); }
         }
-
-        function closeFaculty() {
-            facultyModal.classList.add('opacity-0');
-            modalContainer.classList.remove('scale-100');
-            modalContainer.classList.add('scale-95');
-            document.body.classList.remove('overflow-hidden');
-            setTimeout(() => { facultyModal.classList.add('hidden'); }, 300);
-        }
-
-        // --- Micro-Particle Vector Canvas Engine ---
-        const canvas = document.getElementById('ambient-particles');
-        const ctx = canvas.getContext('2d');
-        let particlesArray = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.25;
-                this.speedY = (Math.random() - 0.5) * 0.25;
-                this.alpha = Math.random() * 0.5 + 0.1;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = '#8b5cf6';
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = '#a78bfa';
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        function init() {
-            const numParticles = Math.min(40, Math.floor((canvas.width * canvas.height) / 35000));
-            for (let i = 0; i < numParticles; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            requestAnimationFrame(animate);
-        }
-        init();
-        animate();
+        for(let i=0;i<50;i++) parts.push(new P());
+        function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); parts.forEach(p=>{p.up();p.dr();}); requestAnimationFrame(anim); }
+        anim();
     </script>
 </body>
 </html>
